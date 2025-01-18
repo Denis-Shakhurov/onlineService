@@ -133,7 +133,7 @@ import static io.javalin.rendering.template.TemplateUtil.model;
     }
 
     public void logout(Context ctx) {
-        ctx.sessionAttribute(FLASH, "");
+        ctx.sessionAttribute(FLASH, null);
         ctx.cookie(USER_ID, "");
         ctx.cookie(JWT, "");
         ctx.status(HttpStatus.OK);
