@@ -67,7 +67,7 @@ public class UserRepository extends BaseRepository {
             session.beginTransaction();
             user = userDAO.findByEmail(email);
             session.getTransaction().commit();
-            return Optional.of(user);
+            return Optional.ofNullable(user);
         }
     }
 }

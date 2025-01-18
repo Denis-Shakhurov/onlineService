@@ -9,19 +9,19 @@ public class RegistrationController extends BaseController {
 
     public void index(Context ctx) {
         BasePage basePage = new BasePage();
-        ctx.consumeSessionAttribute(FLASH);
+        basePage.setFlash(ctx.consumeSessionAttribute(FLASH));
         ctx.render("users/registration/registration.jte", model(PAGE, basePage));
     }
 
     public void indexUser(Context ctx) {
         BasePage basePage = new BasePage();
-        ctx.consumeSessionAttribute(FLASH);
+        basePage.setFlash(ctx.consumeSessionAttribute(FLASH));
         ctx.render("users/registration/registrationUser.jte", model(PAGE, basePage));
     }
 
     public void indexMaster(Context ctx) {
         BasePage basePage = new BasePage();
-        ctx.consumeSessionAttribute(FLASH);
+        basePage.setFlash(ctx.consumeSessionAttribute(FLASH));
         ctx.render("users/registration/registrationMaster.jte", model(PAGE, basePage));
     }
 }

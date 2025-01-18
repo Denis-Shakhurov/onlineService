@@ -1,5 +1,6 @@
 package controller;
 
+import com.lambdaworks.crypto.SCryptUtil;
 import config.Provider;
 import dto.BasePage;
 import dto.UserPage;
@@ -57,31 +58,30 @@ import static io.javalin.rendering.template.TemplateUtil.model;
         UserPage userPage = new UserPage(user);
         addUserInfoInBasePage(userPage, user);
 
+        userPage.setFlash(ctx.consumeSessionAttribute(FLASH));
         ctx.status(HttpStatus.OK);
         ctx.render("users/show.jte", model(PAGE, userPage));
     }
 
     public void create(Context ctx, String role) {
-        String firstName = ctx.formParam("firstName");
-        String lastName = ctx.formParam("lastName");
-        String email = ctx.formParam("email");
-        String password = ctx.formParam("password");
-
         User user = new User();
 
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setEmail(email);
-        user.setPassword(password);
+        getFormParamAndSetUser(ctx, user);
         user.setRole(role);
 
-        Integer id = userService.save(user).getId();
+        if (!userService.existsByEmail(user.getEmail())) {
+            Integer id = userService.save(user).getId();
 
-        ctx.cookie(USER_ID, String.valueOf(id));
-        addTokenInCookie(ctx, user, provider);
+            ctx.cookie(USER_ID, String.valueOf(id));
+            addTokenInCookie(ctx, user, provider);
 
-        ctx.status(HttpStatus.CREATED);
-        ctx.redirect(namedRoutes.getUserPath(id));
+            ctx.status(HttpStatus.CREATED);
+            ctx.redirect(namedRoutes.getUserPath(id));
+        } else {
+            ctx.sessionAttribute(FLASH, "Пользователь с " + user.getEmail() + " уже зарегистрирован");
+            ctx.status(HttpStatus.BAD_REQUEST);
+            ctx.redirect(namedRoutes.getRegistrationPath());
+        }
     }
 
     public void update(Context ctx) {
@@ -89,44 +89,44 @@ import static io.javalin.rendering.template.TemplateUtil.model;
         User user = userService.findById(id)
                 .orElseThrow(() -> new NotFoundResponse("User with id " + id + " not found"));
 
-        String firstName = ctx.formParam("firstName");
-        String lastName = ctx.formParam("lastName");
-        String email = ctx.formParam("email");
-        String password = ctx.formParam("password");
-        String role = user.getRole();
+        getFormParamAndSetUser(ctx, user);
 
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setEmail(email);
-        user.setPassword(password);
-        user.setRole(role);
+        if (!userService.existsByEmail(user.getEmail())) {
+            User updatedUser = userService.update(user);
 
-        User updatedUser = userService.update(user);
+            ctx.cookie(USER_ID, String.valueOf(id));
+            addTokenInCookie(ctx, updatedUser, provider);
 
-        ctx.cookie(USER_ID, String.valueOf(id));
-        addTokenInCookie(ctx, updatedUser, provider);
-
-        ctx.status(HttpStatus.OK);
-        ctx.redirect(namedRoutes.getUserPath(id));
+            ctx.sessionAttribute(FLASH, "Изменения сохранены");
+            ctx.status(HttpStatus.OK);
+            ctx.redirect(namedRoutes.getUserPath(id));
+        } else {
+            ctx.sessionAttribute(FLASH, "Пользователь с " + user.getEmail() + " уже зарегистрирован");
+            ctx.status(HttpStatus.BAD_REQUEST);
+            ctx.redirect(namedRoutes.getRegistrationPath());
+        }
     }
 
     public void login(Context ctx) {
         String email = ctx.formParam("email");
         String password = ctx.formParam("password");
 
-        User user = userService.findByEmail(email)
-                .orElse(null);
+        User user = userService.findByEmail(email).orElse(null);
+        String hashedPassword = user != null ? user.getPassword() : null;
 
-        if (user != null && user.getPassword().equals(password)) {
+        if (user != null && SCryptUtil.check(password, hashedPassword)) {
             ctx.cookie(USER_ID, String.valueOf(user.getId()));
             addTokenInCookie(ctx, user, provider);
 
+            ctx.sessionAttribute(FLASH, "Привет " + user.getFirstName() + "!");
             ctx.status(HttpStatus.OK);
             ctx.redirect(namedRoutes.getUserPath(user.getId()));
-        } else if (user != null && !user.getPassword().equals(password)) {
+        } else if (user != null && !SCryptUtil.check(password, hashedPassword)) {
             ctx.sessionAttribute(FLASH, "Не верный пароль");
+            ctx.status(HttpStatus.BAD_REQUEST);
             ctx.redirect(namedRoutes.getLoginUserPath());
-        } else {
+        } else if (user == null) {
+            ctx.status(HttpStatus.BAD_REQUEST);
             ctx.sessionAttribute(FLASH, "Не верный email");
             ctx.redirect(namedRoutes.getLoginUserPath());
         }
@@ -138,5 +138,21 @@ import static io.javalin.rendering.template.TemplateUtil.model;
         ctx.cookie(JWT, "");
         ctx.status(HttpStatus.OK);
         ctx.redirect(namedRoutes.getStartPath());
+    }
+
+    private void getFormParamAndSetUser(Context ctx, User user) {
+        String firstName = ctx.formParam("firstName");
+        String lastName = ctx.formParam("lastName");
+        String email = ctx.formParam("email");
+        String password = ctx.formParam("password");
+        String role = user.getRole();
+
+        String hashedPassword = SCryptUtil.scrypt(password, 2, 2, 2);
+
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setEmail(email);
+        user.setPassword(hashedPassword);
+        user.setRole(role);
     }
 }
