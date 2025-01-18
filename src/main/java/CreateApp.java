@@ -1,16 +1,20 @@
 import controller.RegistrationController;
 import controller.StartController;
 import controller.UserController;
+import controller.UserEditController;
 import gg.jte.ContentType;
 import gg.jte.TemplateEngine;
 import gg.jte.resolve.ResourceCodeResolver;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinJte;
 import service.UserService;
+import utils.NamedRoutes;
 
 public class CreateApp {
+    private final NamedRoutes namedRoutes = new NamedRoutes();
     private final UserService userService = new UserService();
     private final UserController userController = new UserController(userService);
+    private final UserEditController userEditController = new UserEditController(userService);
     private final RegistrationController registrationController = new RegistrationController();
     private final StartController startController = new StartController(userService);
 
@@ -26,16 +30,18 @@ public class CreateApp {
             config.bundledPlugins.enableDevLogging();
         });
 
-        app.get("/users", userController::index);
-        app.get("/users/{id}", userController::show);
+        app.get(namedRoutes.getUsersPath(), userController::index);
+        app.get(namedRoutes.getUserPath("{id}"), userController::show);
+        app.get(namedRoutes.getEditUserPath("{id}"), userEditController::index);
+        app.post(namedRoutes.getEditUserPath("{id}"), userController::update);
 
-        app.get("/", startController::index);
+        app.get(namedRoutes.getStartPath(), startController::index);
 
-        app.get("/registration", registrationController::index);
-        app.get("/registration/user", registrationController::indexUser);
-        app.get("/registration/master", registrationController::indexMaster);
-        app.post("/registration/user", ctx -> {userController.create(ctx, "user");});
-        app.post("/registration/master", ctx -> {userController.create(ctx, "master");});
+        app.get(namedRoutes.getRegistrationPath(), registrationController::index);
+        app.get(namedRoutes.getRegistrationUserPath(), registrationController::indexUser);
+        app.get(namedRoutes.getRegistrationMasterPath(), registrationController::indexMaster);
+        app.post(namedRoutes.getRegistrationUserPath(), ctx -> {userController.create(ctx, "user");});
+        app.post(namedRoutes.getRegistrationMasterPath(), ctx -> {userController.create(ctx, "master");});
 
         return app;
     }

@@ -32,4 +32,12 @@ public class NamedRoutes {
     public String getRegistrationMasterPath() {
         return  "/registration/master";
     }
+
+    public String getEditUserPath(String id) {
+        return  "/users/" + id + "/edit";
+    }
+
+    public String getEditUserPath(Integer id) {
+        return  getEditUserPath(String.valueOf(id));
+    }
 }

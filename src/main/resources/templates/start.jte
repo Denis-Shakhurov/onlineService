@@ -26,7 +26,7 @@ content = @`
                     </div>
                 @else
                     <div class="d-none d-md-block">
-                        <a class="btn btn-primary" role="button" href="${page.getUserPath(page.getUserInfo().getId())}">${page.getUserInfo().getFirstName()}</a>
+                        <a class="btn btn-primary" role="button" href="${page.getUserPath(page.getUserInfo().getId())}">Мой профиль</a>
                         <a class="btn btn-primary" role="button" href="">Выйти</a>
                     </div>
                 @endif

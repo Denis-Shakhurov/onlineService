@@ -1,17 +1,60 @@
-@import dto.UserPage
-@param UserPage page
+@import dto.BasePage
+@param BasePage page
 
 @template.layout.page(
 content = @`
     <main class="flax-grow-1">
+        <nav class="navbar navbar-dark navbar-expand-md bg-dark py-3">
+            <div class="container"><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-6"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse flex-grow-0 order-md-first" id="navcol-6">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item"><a class="nav-link active" href="${page.getStartPath()}">Главная</a></li>
+                        <li class="nav-item"><a class="nav-link" href="">Статистика игр</a></li>
+                    </ul>
+                </div>
+                @if(page.getUserInfo() == null)
+                    <div class="d-none d-md-block">
+                        <a class="btn btn-light me-2" role="button" href="${page.getRegistrationPath()}">Регистрация</a>
+                        <a class="btn btn-primary" role="button" href="">Войти</a>
+                    </div>
+                @else
+                    <div class="d-none d-md-block">
+                        <a class="btn btn-primary" role="button" href="${page.getUserPath(page.getUserInfo().getId())}">Мой профиль</a>
+                        <a class="btn btn-primary" role="button" href="">Выйти</a>
+                    </div>
+                @endif
+            </div>
+        </nav>
         <section>
             <div class="container-lg mt-5">
-                <h1>${page.getUser().getFirstName()}</h1>
-                @if(page.getUserInfo() != null)
-                    <h1>${page.getUserInfo().getRole()}</h1>
-                @else
-                    <h1>${page.getUserInfo().getRole()}</h1>
-                @endif
+                <h1>${page.getUserInfo().getFirstName()}</h1>
+                <form class="form-horizontal" action="${page.getEditUserPath(page.getUserInfo().getId())}" method="post">
+                    <div class="form-group">
+                        <label class="mb-3 control-label" for="name-input">Новое имя</label>
+                        <div class="mb-3">
+                            <input class="form-control" id="name-input" type="text" name="firstName" placeholder="${page.getUserInfo().getFirstName()}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="mb-3 control-label" for="name-input">Новая фамилию</label>
+                        <div class="mb-3">
+                            <input class="form-control" id="name-input" type="text" name="lastName" placeholder="${page.getUserInfo().getLastName()}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="mb-3 control-label" for="name-input">Новый email</label>
+                        <div class="mb-3">
+                            <input class="form-control" type="email" name="email" placeholder="${page.getUserInfo().getEmail()}" style="margin-bottom: 12px;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="mb-3 control-label" for="name-input">Введи пароль</label>
+                        <div class="mb-3">
+                            <input class="form-control" type="password" name="password" placeholder="">
+                        </div>
+                    </div>
+                    <div class="mb-3"><button class="btn btn-primary d-block w-100" type="submit">Сохранить</button></div>
+                </form>
             </div>
         </section>
     </main>
