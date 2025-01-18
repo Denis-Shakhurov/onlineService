@@ -24,4 +24,12 @@ public class UserService {
     public User update(User user) {
         return userRepository.update(user);
     }
+
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
 }

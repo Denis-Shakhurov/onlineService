@@ -50,4 +50,24 @@ public class UserRepository extends BaseRepository {
             return user;
         }
     }
+
+    public boolean existsByEmail(String email) {
+        try (Session session = sessionFactory.getCurrentSession()) {
+            boolean exists;
+            session.beginTransaction();
+            exists =  userDAO.existsByEmail(email);
+            session.getTransaction().commit();
+            return exists;
+        }
+    }
+
+    public Optional<User> findByEmail(String email) {
+        try (Session session = sessionFactory.getCurrentSession()) {
+            User user;
+            session.beginTransaction();
+            user = userDAO.findByEmail(email);
+            session.getTransaction().commit();
+            return Optional.of(user);
+        }
+    }
 }

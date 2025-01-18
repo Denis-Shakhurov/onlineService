@@ -15,12 +15,12 @@ content = @`
                 @if(page.getUserInfo() == null)
                     <div class="d-none d-md-block">
                         <a class="btn btn-light me-2" role="button" href="${page.getRegistrationPath()}">Регистрация</a>
-                        <a class="btn btn-primary" role="button" href="">Войти</a>
+                        <a class="btn btn-primary" role="button" href="${page.getLoginUserPath()}">Войти</a>
                     </div>
                 @else
                     <div class="d-none d-md-block">
                         <a class="btn btn-primary" role="button" href="${page.getEditUserPath(page.getUser().getId())}">Редактировать профиль</a>
-                        <a class="btn btn-primary" role="button" href="">Выйти</a>
+                        <a class="btn btn-primary" role="button" href="${page.getLogoutUserPath()}">Выйти</a>
                     </div>
                 @endif
             </div>

@@ -32,6 +32,9 @@ public class CreateApp {
         app.get(namedRoutes.getUserPath("{id}"), userController::show);
         app.get(namedRoutes.getEditUserPath("{id}"), userController::indexEdit);
         app.post(namedRoutes.getEditUserPath("{id}"), userController::update);
+        app.post(namedRoutes.getLoginUserPath(), userController::login);
+        app.get(namedRoutes.getLoginUserPath(), userController::indexLogin);
+        app.get(namedRoutes.getLogoutUserPath(), userController::logout);
 
         app.get(namedRoutes.getStartPath(), startController::index);
 

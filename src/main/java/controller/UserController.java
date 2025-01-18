@@ -41,6 +41,14 @@ import static io.javalin.rendering.template.TemplateUtil.model;
         ctx.render("users/edit.jte", model(PAGE, basePage));
     }
 
+    public void indexLogin(Context ctx) {
+        BasePage basePage = new BasePage();
+
+        basePage.setFlash(ctx.consumeSessionAttribute(FLASH));
+        ctx.status(HttpStatus.OK);
+        ctx.render("users/login.jte", model(PAGE, basePage));
+    }
+
     public void show(Context ctx) {
         Integer id = Integer.parseInt(ctx.pathParam(ID));
         User user = userService.findById(id)
@@ -100,5 +108,35 @@ import static io.javalin.rendering.template.TemplateUtil.model;
 
         ctx.status(HttpStatus.OK);
         ctx.redirect(namedRoutes.getUserPath(id));
+    }
+
+    public void login(Context ctx) {
+        String email = ctx.formParam("email");
+        String password = ctx.formParam("password");
+
+        User user = userService.findByEmail(email)
+                .orElse(null);
+
+        if (user != null && user.getPassword().equals(password)) {
+            ctx.cookie(USER_ID, String.valueOf(user.getId()));
+            addTokenInCookie(ctx, user, provider);
+
+            ctx.status(HttpStatus.OK);
+            ctx.redirect(namedRoutes.getUserPath(user.getId()));
+        } else if (user != null && !user.getPassword().equals(password)) {
+            ctx.sessionAttribute(FLASH, "Не верный пароль");
+            ctx.redirect(namedRoutes.getLoginUserPath());
+        } else {
+            ctx.sessionAttribute(FLASH, "Не верный email");
+            ctx.redirect(namedRoutes.getLoginUserPath());
+        }
+    }
+
+    public void logout(Context ctx) {
+        ctx.sessionAttribute(FLASH, "");
+        ctx.cookie(USER_ID, "");
+        ctx.cookie(JWT, "");
+        ctx.status(HttpStatus.OK);
+        ctx.redirect(namedRoutes.getStartPath());
     }
 }

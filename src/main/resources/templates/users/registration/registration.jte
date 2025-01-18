@@ -19,6 +19,9 @@ content = @`
                         <li class="nav-item"><a class="nav-link" href="">Статистика игр</a></li>
                     </ul>
                 </div>
+                <div class="d-none d-md-block">
+                    <a class="btn btn-primary" role="button" href="${page.getLoginUserPath()}">Войти</a>
+                </div>
             </div>
         </nav>
         <section class="py-4 py-xl-5">

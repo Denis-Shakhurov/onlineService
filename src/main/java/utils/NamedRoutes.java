@@ -40,4 +40,12 @@ public class NamedRoutes {
     public String getEditUserPath(Integer id) {
         return  getEditUserPath(String.valueOf(id));
     }
+
+    public String getLoginUserPath() {
+        return  "/login";
+    }
+
+    public String getLogoutUserPath() {
+        return  "/logout";
+    }
 }
