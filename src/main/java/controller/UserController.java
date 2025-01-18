@@ -1,6 +1,7 @@
 package controller;
 
 import config.Provider;
+import dto.BasePage;
 import dto.UserPage;
 import dto.UsersPage;
 import io.javalin.http.Context;
@@ -28,6 +29,17 @@ import static io.javalin.rendering.template.TemplateUtil.model;
         ctx.status(HttpStatus.OK);
         ctx.render("users/index.jte", model(PAGE, usersPage));
      }
+
+     public void indexEdit(Context ctx) {
+        Integer id = Integer.parseInt(ctx.pathParam(ID));
+
+        BasePage basePage = new BasePage();
+
+        userService.findById(id).ifPresent(user -> addUserInfoInBasePage(basePage, user));
+
+        ctx.status(HttpStatus.OK);
+        ctx.render("users/edit.jte", model(PAGE, basePage));
+    }
 
     public void show(Context ctx) {
         Integer id = Integer.parseInt(ctx.pathParam(ID));

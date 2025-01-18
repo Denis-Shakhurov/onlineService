@@ -1,7 +1,6 @@
 import controller.RegistrationController;
 import controller.StartController;
 import controller.UserController;
-import controller.UserEditController;
 import gg.jte.ContentType;
 import gg.jte.TemplateEngine;
 import gg.jte.resolve.ResourceCodeResolver;
@@ -14,7 +13,6 @@ public class CreateApp {
     private final NamedRoutes namedRoutes = new NamedRoutes();
     private final UserService userService = new UserService();
     private final UserController userController = new UserController(userService);
-    private final UserEditController userEditController = new UserEditController(userService);
     private final RegistrationController registrationController = new RegistrationController();
     private final StartController startController = new StartController(userService);
 
@@ -32,7 +30,7 @@ public class CreateApp {
 
         app.get(namedRoutes.getUsersPath(), userController::index);
         app.get(namedRoutes.getUserPath("{id}"), userController::show);
-        app.get(namedRoutes.getEditUserPath("{id}"), userEditController::index);
+        app.get(namedRoutes.getEditUserPath("{id}"), userController::indexEdit);
         app.post(namedRoutes.getEditUserPath("{id}"), userController::update);
 
         app.get(namedRoutes.getStartPath(), startController::index);
