@@ -44,7 +44,6 @@ content = @`
 
                         <div class="mb-5 pt-4">
                             <h2 class="h4 mb-4">Мом услуги</h2>
-                            <a class="btn btn-primary" role="button" href="${page.getServicesPath()}">Добавть новую</a>
                             <div class="row gy-3">
                                 @for(var service : page.getServices())
                                     <div class="col-lg-4 col-md-6 col-12">
@@ -58,7 +57,7 @@ content = @`
                                                 </div>
                                                 <h5 class="mb-5">${service.getDescription()}</h5>
                                                 <div class="text-end mt-auto">
-                                                    <a class="stretched-link text-decoration-none text-body align-bottom" href="/courses/employment-for-developers/goto">Повторить</a>
+                                                    <a class="stretched-link text-decoration-none text-body align-bottom" href="${page.getEditServicesPath(service.getId())}">Просмотр</a>
                                                 </div>
                                             </div>
                                         </div>

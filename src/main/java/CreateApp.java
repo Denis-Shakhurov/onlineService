@@ -43,6 +43,8 @@ public class CreateApp {
         app.get(namedRoutes.getServicesByUserPath("{id}"), serviceController::index);
         app.post(namedRoutes.getServicesPath(), serviceController::create);
         app.get(namedRoutes.getServicesPath(), serviceController::indexCreate);
+        app.get(namedRoutes.getEditServicesPath("{id}"), serviceController::indexEdit);
+        app.post(namedRoutes.getEditServicesPath("{id}"), serviceController::update);
 
         app.get(namedRoutes.getStartPath(), startController::index);
 

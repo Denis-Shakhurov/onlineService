@@ -15,4 +15,5 @@ public class BasePage extends NamedRoutes {
     private String flash;
 
     private List<User> masters;
+    private int serviceId;
 }

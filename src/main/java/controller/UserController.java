@@ -37,6 +37,7 @@ import static io.javalin.rendering.template.TemplateUtil.model;
         BasePage basePage = new BasePage();
 
         userService.findById(id).ifPresent(user -> addUserInfoInBasePage(basePage, user));
+        basePage.setFlash(ctx.consumeSessionAttribute(FLASH));
 
         ctx.status(HttpStatus.OK);
         ctx.render("users/edit.jte", model(PAGE, basePage));
@@ -104,7 +105,7 @@ import static io.javalin.rendering.template.TemplateUtil.model;
         } else {
             ctx.sessionAttribute(FLASH, "Пользователь с " + user.getEmail() + " уже зарегистрирован");
             ctx.status(HttpStatus.BAD_REQUEST);
-            ctx.redirect(namedRoutes.getRegistrationPath());
+            ctx.redirect(namedRoutes.getEditUserPath(id));
         }
     }
 
@@ -142,10 +143,18 @@ import static io.javalin.rendering.template.TemplateUtil.model;
     }
 
     private void getFormParamAndSetUser(Context ctx, User user) {
-        String firstName = ctx.formParam("firstName");
-        String lastName = ctx.formParam("lastName");
-        String email = ctx.formParam("email");
-        String password = ctx.formParam("password");
+        String firstName = ctx.formParam("firstName").equals("")
+                ? user.getFirstName()
+                : ctx.formParam("firstName");
+        String lastName = ctx.formParam("lastName").equals("")
+                ? user.getLastName()
+                : ctx.formParam("lastName");
+        String email = ctx.formParam("email").equals("")
+                ? user.getEmail()
+                : ctx.formParam("email");
+        String password = ctx.formParam("password").equals("")
+                ? user.getPassword()
+                : ctx.formParam("password");
         String role = user.getRole();
 
         String hashedPassword = SCryptUtil.scrypt(password, 2, 2, 2);

@@ -20,4 +20,8 @@ public class ServiceService {
     public List<Service> findAllForUser(int userId) {
         return serviceRepository.findAllForUser(userId);
     }
+
+    public Service update(Service service) {
+        return serviceRepository.update(service);
+    }
 }

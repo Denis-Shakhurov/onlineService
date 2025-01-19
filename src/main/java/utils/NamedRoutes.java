@@ -56,7 +56,24 @@ public class NamedRoutes {
     public String getServicesByUserPath(int id) {
         return getServicesByUserPath(String.valueOf(id));
     }
+
     public String getServicesPath() {
         return  "/services";
+    }
+
+    public String getEditServicesPath(String id) {
+        return  "/services/" + id + "/edit";
+    }
+
+    public String getEditServicesPath(int id) {
+        return  getEditServicesPath(String.valueOf(id));
+    }
+
+    public String getServicePath(String id) {
+        return  "/services/" + id;
+    }
+
+    public String getServicePath(int id) {
+        return  getServicePath(String.valueOf(id));
     }
 }

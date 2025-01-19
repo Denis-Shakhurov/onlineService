@@ -39,4 +39,14 @@ public class ServiceRepository extends BaseRepository {
             return services;
         }
     }
+
+    public Service update(Service serviceForUpdate) {
+        try (Session session = sessionFactory.getCurrentSession()) {
+            Service service;
+            session.beginTransaction();
+            service = serviceDAO.update(serviceForUpdate);
+            session.getTransaction().commit();
+            return service;
+        }
+    }
 }
