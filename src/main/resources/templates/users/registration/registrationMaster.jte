@@ -5,25 +5,25 @@
 content = @`
     <main class="flax-grow-1">
         <body>
-        @if( page.getFlash() != null)
-            <div class="rounded-0 m-0 alert alert-dismissible fade show alert-warning" role="alert">
-                <p class="m-0">${page.getFlash()}</p>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
-        <nav class="navbar navbar-dark navbar-expand-md bg-dark py-3">
+        <nav class="navbar navbar-dark navbar-expand-md bg-primary py-3">
             <div class="container"><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-6"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse flex-grow-0 order-md-first" id="navcol-6">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item"><a class="nav-link active" href="${page.getStartPath()}">Главная</a></li>
-                        <li class="nav-item"><a class="nav-link" href="">Статистика игр</a></li>
                     </ul>
                 </div>
                 <div class="d-none d-md-block">
-                    <a class="btn btn-primary" role="button" href="${page.getLoginUserPath()}">Войти</a>
+                    <a class="btn btn-light me-2" role="button" href="${page.getRegistrationPath()}">Регистрация</a>
+                    <a class="btn btn-light me-2" role="button" href="${page.getLoginUserPath()}">Войти</a>
                 </div>
             </div>
         </nav>
+        @if( page.getFlash() != null)
+        <div class="rounded-0 m-0 alert alert-dismissible fade show alert-warning" role="alert">
+            <p class="m-0">${page.getFlash()}</p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        @endif
         <section class="py-4 py-xl-5">
             <div class="container">
                 <div class="row mb-5">

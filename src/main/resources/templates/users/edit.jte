@@ -9,13 +9,16 @@ content = @`
                 <div class="collapse navbar-collapse flex-grow-0 order-md-first" id="navcol-6">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item"><a class="nav-link active" href="${page.getStartPath()}">Главная</a></li>
-                        <li class="nav-item"><a class="nav-link" href="">Статистика игр</a></li>
+                        @if(page.getUserInfo() != null && page.getUserInfo().getRole().equals("master"))
+                            <li class="nav-item"><a class="nav-link" href="">Мои услуги</a></li>
+                            <li class="nav-item"><a class="nav-link" href="">Статистика</a></li>
+                        @endif
                     </ul>
                 </div>
                 @if(page.getUserInfo() == null)
                     <div class="d-none d-md-block">
                         <a class="btn btn-light me-2" role="button" href="${page.getRegistrationPath()}">Регистрация</a>
-                        <a class="btn btn-primary" role="button" href="">Войти</a>
+                        <a class="btn btn-light me-2" role="button" href="">Войти</a>
                     </div>
                 @else
                     <div class="d-none d-md-block">

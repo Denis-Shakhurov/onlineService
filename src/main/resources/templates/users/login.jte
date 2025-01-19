@@ -4,12 +4,11 @@
 @template.layout.page(
 content = @`
     <main class="flax-grow-1">
-        <nav class="navbar navbar-dark navbar-expand-md bg-dark py-3">
+        <nav class="navbar navbar-dark navbar-expand-md bg-primary py-3">
             <div class="container"><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-6"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse flex-grow-0 order-md-first" id="navcol-6">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item"><a class="nav-link active" href="${page.getStartPath()}">Главная</a></li>
-                        <li class="nav-item"><a class="nav-link" href="">Статистика игр</a></li>
                     </ul>
                 </div>
                     <div class="d-none d-md-block">
