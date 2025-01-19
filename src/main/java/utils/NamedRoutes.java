@@ -17,7 +17,7 @@ public class NamedRoutes {
         return  "/users/" + id;
     }
 
-    public String getUserPath(Integer id) {
+    public String getUserPath(int id) {
         return  getUserPath(String.valueOf(id));
     }
 
@@ -37,7 +37,7 @@ public class NamedRoutes {
         return  "/users/" + id + "/edit";
     }
 
-    public String getEditUserPath(Integer id) {
+    public String getEditUserPath(int id) {
         return  getEditUserPath(String.valueOf(id));
     }
 
@@ -47,5 +47,16 @@ public class NamedRoutes {
 
     public String getLogoutUserPath() {
         return  "/logout";
+    }
+
+    public String getServicesByUserPath(String id) {
+        return  "/users/" + id + "/services";
+    }
+
+    public String getServicesByUserPath(int id) {
+        return getServicesByUserPath(String.valueOf(id));
+    }
+    public String getServicesPath() {
+        return  "/services";
     }
 }

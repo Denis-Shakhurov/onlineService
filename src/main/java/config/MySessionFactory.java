@@ -20,6 +20,7 @@ public class MySessionFactory {
         properties.put(Environment.USER, "root");
         properties.put(Environment.PASS, "password");
         properties.put(Environment.SHOW_SQL, true);
+        properties.put(Environment.HBM2DDL_AUTO, "update");
         properties.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
 
         sessionFactory = new Configuration()

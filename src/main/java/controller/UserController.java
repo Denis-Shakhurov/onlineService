@@ -55,7 +55,8 @@ import static io.javalin.rendering.template.TemplateUtil.model;
         User user = userService.findById(id)
                 .orElseThrow(() -> new NotFoundResponse("User with id " + id + " not found"));
 
-        UserPage userPage = new UserPage(user);
+        UserPage userPage = new UserPage();
+        userPage.setUser(user);
         addUserInfoInBasePage(userPage, user);
 
         userPage.setFlash(ctx.consumeSessionAttribute(FLASH));

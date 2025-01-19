@@ -15,7 +15,7 @@ import java.util.List;
 public class Service {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Integer id;
 
     @Column(nullable = false)
     private String name;
@@ -25,6 +25,13 @@ public class Service {
 
     @Column()
     private Double price;
+
+//    @Column(name = "user_id")
+//    private Integer userId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "service_id")
+    private User user;
 
     @OneToMany
     @JoinColumn(name = "service_id")

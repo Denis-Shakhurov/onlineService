@@ -21,6 +21,16 @@ public class UserRepository extends BaseRepository {
         }
     }
 
+    public List<User> findAllByRole(String role) {
+        try (Session session = sessionFactory.getCurrentSession()) {
+            List<User> users = new ArrayList<>();
+            session.beginTransaction();
+            users.addAll(userDAO.findAllByRole(role));
+            session.getTransaction().commit();
+            return users;
+        }
+    }
+
     public Optional<User> findById(Integer id) {
         try (Session session = sessionFactory.getCurrentSession()) {
             User user;

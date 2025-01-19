@@ -10,7 +10,7 @@ content = @`
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item"><a class="nav-link active" href="${page.getStartPath()}">Главная</a></li>
                 @if(page.getUser().getRole().equals("master"))
-                    <li class="nav-item"><a class="nav-link" href="">Мои услуги</a></li>
+                    <li class="nav-item"><a class="nav-link" href="${page.getServicesByUserPath(page.getUser().getId())}">Мои услуги</a></li>
                     <li class="nav-item"><a class="nav-link" href="">Статистика</a></li>
                 @endif
                 </ul>

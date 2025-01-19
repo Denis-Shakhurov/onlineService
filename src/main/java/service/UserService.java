@@ -13,6 +13,10 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public List<User> getAllByRole(String role) {
+        return userRepository.findAllByRole(role);
+    }
+
     public Optional<User> findById(Integer id) {
         return userRepository.findById(id);
     }

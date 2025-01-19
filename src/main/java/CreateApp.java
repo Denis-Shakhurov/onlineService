@@ -1,4 +1,5 @@
 import controller.RegistrationController;
+import controller.ServiceController;
 import controller.StartController;
 import controller.UserController;
 import gg.jte.ContentType;
@@ -6,13 +7,16 @@ import gg.jte.TemplateEngine;
 import gg.jte.resolve.ResourceCodeResolver;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinJte;
+import service.ServiceService;
 import service.UserService;
 import utils.NamedRoutes;
 
 public class CreateApp {
     private final NamedRoutes namedRoutes = new NamedRoutes();
     private final UserService userService = new UserService();
+    private final ServiceService serviceService = new ServiceService();
     private final UserController userController = new UserController(userService);
+    private final ServiceController serviceController = new ServiceController(serviceService, userService);
     private final RegistrationController registrationController = new RegistrationController();
     private final StartController startController = new StartController(userService);
 
@@ -35,6 +39,10 @@ public class CreateApp {
         app.post(namedRoutes.getLoginUserPath(), userController::login);
         app.get(namedRoutes.getLoginUserPath(), userController::indexLogin);
         app.get(namedRoutes.getLogoutUserPath(), userController::logout);
+
+        app.get(namedRoutes.getServicesByUserPath("{id}"), serviceController::index);
+        app.post(namedRoutes.getServicesPath(), serviceController::create);
+        app.get(namedRoutes.getServicesPath(), serviceController::indexCreate);
 
         app.get(namedRoutes.getStartPath(), startController::index);
 

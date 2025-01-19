@@ -33,7 +33,7 @@ public class User {
     private String role;
 
     @OneToMany
-    @JoinColumn(name = "service_id")
+    @JoinColumn(name = "user_id")
     private List<Service> services;
 
     @OneToOne

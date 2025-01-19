@@ -6,6 +6,8 @@ import jakarta.persistence.criteria.Root;
 import model.User;
 import org.hibernate.SessionFactory;
 
+import java.util.List;
+
 public class UserDAO extends BaseDAO<User> {
 
     public UserDAO(SessionFactory sessionFactory) {
@@ -26,5 +28,13 @@ public class UserDAO extends BaseDAO<User> {
         Root<User> root = criteria.from(User.class);
         criteria.select(root).where(builder.equal(root.get("email"), email));
         return getCurrentSession().createQuery(criteria).uniqueResult();
+    }
+
+    public List<User> findAllByRole(String role) {
+        CriteriaBuilder builder = getCurrentSession().getCriteriaBuilder();
+        CriteriaQuery<User> criteria = builder.createQuery(User.class);
+        Root<User> root = criteria.from(User.class);
+        criteria.select(root).where(builder.equal(root.get("role"), role));
+        return getCurrentSession().createQuery(criteria).list();
     }
 }
