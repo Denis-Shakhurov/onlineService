@@ -2,6 +2,7 @@ package dto;
 
 import lombok.Getter;
 import lombok.Setter;
+import model.Service;
 import model.User;
 import model.UserInfo;
 import utils.NamedRoutes;
@@ -15,5 +16,5 @@ public class BasePage extends NamedRoutes {
     private String flash;
 
     private List<User> masters;
-    private int serviceId;
+    private Service service;
 }

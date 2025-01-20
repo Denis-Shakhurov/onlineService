@@ -64,7 +64,7 @@ public class ServiceController extends BaseController {
         User user = userService.findById(userId)
                         .orElseThrow(() -> new NotFoundResponse("User not found"));
         addUserInfoInBasePage(basePage, user);
-        basePage.setServiceId(service.getId());
+        basePage.setService(service);
 
         ctx.status(HttpStatus.OK);
         ctx.render("services/edit.jte", model(PAGE, basePage));
