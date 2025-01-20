@@ -41,24 +41,31 @@ content = @`
                 <div class="col">
                     <div class="card shadow mb-3">
                         <div class="card-header py-3">
-                            <p class="text-primary m-0 fw-bold">Добавление услуги</p>
+                            <p class="text-primary m-0 fw-bold">Создание заказа</p>
                         </div>
                         <div class="card-body">
-                            <form action="${page.getServicesPath()}" method="post">
+                            <form action="${page.getOrdersByServicePath(page.getService().getId())}" method="post">
                                 <div class="row">
                                     <div class="col">
-                                        <div class="mb-3"><label class="form-label" for="name"><strong>Название</strong></label><input class="form-control" type="text" id="name" placeholder="" name="name"></div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="mb-3"><label class="form-label" for="price"><strong>Стоимость услуги</strong></label><input class="form-control" type="text" id="price" placeholder="" name="price"></div>
+                                        <div class="mb-3"><p><strong>${page.getService().getName()}</strong></p></div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col">
-                                        <div class="mb-3"><label class="form-label" for="description"><strong>Орисание</strong></label><input class="form-control" type="text" id="description" placeholder="" name="description"></div>
+                                        <div class="mb-3"><p><strong>${page.getService().getDescription()}</strong></p></div>
                                     </div>
                                 </div>
-                                <div class="mb-3"><button class="btn btn-primary btn-sm" type="submit">Добавить</button></div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="mb-3"><p><strong>${page.getService().getPrice()}</strong></p></div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="mb-3"><label class="form-label" for="date"><strong>Запись на дату</strong></label><input class="form-control" type="datetime-local" id="date" placeholder="" name="date"></div>
+                                    </div>
+                                </div>
+                                <div class="mb-3"><button class="btn btn-primary btn-sm" type="submit">Создать</button></div>
                             </form>
                         </div>
                     </div>

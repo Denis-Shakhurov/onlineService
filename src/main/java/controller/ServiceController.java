@@ -11,6 +11,7 @@ import service.ServiceService;
 import service.UserService;
 
 import java.util.List;
+import java.util.Objects;
 
 import static io.javalin.rendering.template.TemplateUtil.model;
 
@@ -24,14 +25,15 @@ public class ServiceController extends BaseController {
     }
 
     public void index(Context ctx) {
-        Integer id = Integer.parseInt(ctx.pathParam(ID));
+        int masterId = Integer.parseInt(ctx.pathParam(ID));
+        int userId = Integer.parseInt(Objects.requireNonNull(ctx.cookie(USER_ID)));
 
-        List<Service> services = serviceService.findAllForUser(id);
-        User user = userService.findById(id)
+
+        List<Service> services = serviceService.findAllForUser(masterId);
+        User user = userService.findById(userId)
                 .orElseThrow(() -> new NotFoundResponse("Service not found"));
 
         UserPage userPage = new UserPage();
-        addUserInfoInBasePage(userPage, user);
         userPage.setServices(services);
         userPage.setUser(user);
         userPage.setFlash(ctx.consumeSessionAttribute(FLASH));
@@ -55,14 +57,15 @@ public class ServiceController extends BaseController {
     }
 
     public void indexEdit(Context ctx) {
-        Integer id = Integer.parseInt(ctx.pathParam(ID));
+        int id = Integer.parseInt(ctx.pathParam(ID));
         Service service = serviceService.findById(id)
                         .orElseThrow(() -> new NotFoundResponse("Service not found"));
-        Integer userId = service.getUser().getId();
+
+        int userId = service.getUser().getId();
+        User user = service.getUser();
 
         BasePage basePage = new BasePage();
-        User user = userService.findById(userId)
-                        .orElseThrow(() -> new NotFoundResponse("User not found"));
+
         addUserInfoInBasePage(basePage, user);
         basePage.setService(service);
 
@@ -75,7 +78,7 @@ public class ServiceController extends BaseController {
         Integer id = userId != null && !userId.equals("") ? Integer.parseInt(userId) : null;
         String name = ctx.formParam("name");
         String description = ctx.formParam("description");
-        Double price = Double.valueOf(ctx.formParam("price"));
+        Double price = Double.valueOf(Objects.requireNonNull(ctx.formParam("price")));
         User user = userService.findById(id)
                 .orElseThrow(() -> new NotFoundResponse("User not found"));
 
@@ -93,21 +96,21 @@ public class ServiceController extends BaseController {
     }
 
     public void update(Context ctx) {
-        Integer id = Integer.parseInt(ctx.pathParam(ID));
+        int id = Integer.parseInt(ctx.pathParam(ID));
 
         Service service = serviceService.findById(id)
                 .orElseThrow(() -> new NotFoundResponse("Service not found"));
 
-        Integer userId = service.getUser().getId();
-        String name = ctx.formParam("name").equals("")
+        int userId = service.getUser().getId();
+        String name = Objects.equals(ctx.formParam("name"), "")
                 ? service.getName()
                 : ctx.formParam("name");
-        String description = ctx.formParam("description").equals("")
+        String description = Objects.equals(ctx.formParam("description"), "")
                 ? service.getDescription()
                 : ctx.formParam("description");
-        Double price = ctx.formParam("price").equals("")
+        Double price = Objects.equals(ctx.formParam("price"), "")
                 ? service.getPrice()
-                : Double.valueOf(ctx.formParam("price"));
+                : Double.valueOf(Objects.requireNonNull(ctx.formParam("price")));
 
         service.setName(name);
         service.setDescription(description);

@@ -8,19 +8,24 @@ import dto.UsersPage;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 import io.javalin.http.NotFoundResponse;
+import model.Order;
 import model.User;
+import service.OrderService;
 import service.UserService;
 
 import java.util.List;
+import java.util.Objects;
 
 import static io.javalin.rendering.template.TemplateUtil.model;
 
     public class UserController extends BaseController {
         private final Provider provider = new Provider();
         private final UserService userService;
+        private final OrderService orderService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, OrderService orderService) {
         this.userService = userService;
+        this.orderService = orderService;
     }
 
     public void index(Context ctx) {
@@ -32,7 +37,7 @@ import static io.javalin.rendering.template.TemplateUtil.model;
      }
 
      public void indexEdit(Context ctx) {
-        Integer id = Integer.parseInt(ctx.pathParam(ID));
+         int id = Integer.parseInt(Objects.requireNonNull(ctx.cookie(USER_ID)));
 
         BasePage basePage = new BasePage();
 
@@ -52,12 +57,16 @@ import static io.javalin.rendering.template.TemplateUtil.model;
     }
 
     public void show(Context ctx) {
-        Integer id = Integer.parseInt(ctx.pathParam(ID));
+        int id = Integer.parseInt(Objects.requireNonNull(ctx.cookie(USER_ID)));
+
         User user = userService.findById(id)
                 .orElseThrow(() -> new NotFoundResponse("User with id " + id + " not found"));
 
+        List<Order> orders = orderService.findAllByUserId(id);
+
         UserPage userPage = new UserPage();
         userPage.setUser(user);
+        userPage.setOrders(orders);
         addUserInfoInBasePage(userPage, user);
 
         userPage.setFlash(ctx.consumeSessionAttribute(FLASH));
@@ -72,7 +81,7 @@ import static io.javalin.rendering.template.TemplateUtil.model;
         user.setRole(role);
 
         if (!userService.existsByEmail(user.getEmail())) {
-            Integer id = userService.save(user).getId();
+            int id = userService.save(user).getId();
 
             ctx.cookie(USER_ID, String.valueOf(id));
             addTokenInCookie(ctx, user, provider);
@@ -87,7 +96,7 @@ import static io.javalin.rendering.template.TemplateUtil.model;
     }
 
     public void update(Context ctx) {
-        Integer id = Integer.parseInt(ctx.pathParam(ID));
+        int id = Integer.parseInt(Objects.requireNonNull(ctx.cookie(USER_ID)));
         User user = userService.findById(id)
                 .orElseThrow(() -> new NotFoundResponse("User with id " + id + " not found"));
 

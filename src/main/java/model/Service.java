@@ -26,16 +26,9 @@ public class Service {
     @Column()
     private Double price;
 
-//    @Column(name = "user_id")
-//    private Integer userId;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "service_id")
+    @ManyToOne()
+    @JoinColumn(name = "user_id")
     private User user;
-
-    @OneToMany
-    @JoinColumn(name = "service_id")
-    private List<Order> orders;
 
     @CreationTimestamp
     @Column(name = "create_date")

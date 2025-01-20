@@ -76,4 +76,32 @@ public class NamedRoutes {
     public String getServicePath(int id) {
         return  getServicePath(String.valueOf(id));
     }
+
+    public String getOrdersByUserPath(String id) {
+        return  "/users/" + id + "/orders";
+    }
+
+    public String getOrdersByUserPath(int id) {
+        return getOrdersByUserPath(String.valueOf(id));
+    }
+
+    public String getOrderPath(String id) {
+        return  "/orders/" + id;
+    }
+
+    public String getOrderPath(int id) {
+        return getOrderPath(String.valueOf(id));
+    }
+
+    public String getOrdersPath() {
+        return  "/orders";
+    }
+
+    public String getOrdersByServicePath(String id) {
+        return  "/services/" + id + "/orders";
+    }
+
+    public String getOrdersByServicePath(int id) {
+        return getOrdersByServicePath(String.valueOf(id));
+    }
 }

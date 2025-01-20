@@ -57,13 +57,13 @@ content = @`
                                     <div class="d-flex">
                                         <span class="bi bi-reception-4 fs-2 lh-1 me-2 h-100"></span>
                                         <div class="my-auto">
-                                            <div class="h3 mb-0">2191</div>
+                                            <div class="h3 mb-0">${page.getOrders().size()}</div>
                                             <a target="_blank" rel="noopener" title="Как начисляются баллы" class="text-body-secondary text-decoration-none text-body" href="">всего заказов</a>
                                         </div>
                                         <div class="d-flex ms-4 ms-xl-5 me-xl-3">
                                             <span class="bi bi-trophy-fill fs-3 lh-1 me-2 h-100"></span>
                                             <div class="my-auto">
-                                                <div class="h3 mb-0">2125</div>
+                                                <div class="h3 mb-0">${page.getOrders().stream().map(o -> o.getPrice()).reduce(0.0, Double::sum)}</div>
                                                 <a class="text-body-secondary text-decoration-none text-body" href="/ratings">на сумму</a>
                                             </div>
                                         </div>
@@ -77,116 +77,28 @@ content = @`
                         <div class="mb-5 pt-4">
                             <h2 class="h4 mb-4">Последнее заказы</h2>
                             <div class="row gy-3">
+                                @for(var order : page.getOrders())
                                 <div class="col-lg-4 col-md-6 col-12">
                                     <div class="card shadow-sm x-shadow-fade-in h-100 border-top">
                                         <div class="card-header p-1 bg-success"></div>
                                         <div class="card-body h-100 d-flex flex-column">
                                             <div class="mb-1">
                                                 <div class="badge bg-body-tertiary text-body">
-                                                    Основные
+                                                    ${order.getService().getName()}
                                                 </div>
                                             </div>
-                                            <h5 class="mb-5">Трудоустройство для разработчиков</h5>
+                                            <h5 class="mb-5">Стоимость: ${order.getPrice()}</h5>
+                                            <h5 class="mb-5">Запись на дату: ${order.getCreateDate().toString()}</h5>
                                             <div class="text-end mt-auto">
                                                 <a class="stretched-link text-decoration-none text-body align-bottom" href="/courses/employment-for-developers/goto">Повторить</a>
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
-                                <div class="col-lg-4 col-md-6 col-12">
-                                    <div class="card shadow-sm x-shadow-fade-in h-100 border-top">
-                                        <div class="card-header p-1 bg-success"></div>
-                                        <div class="card-body h-100 d-flex flex-column">
-                                            <div class="mb-1">
-                                                <div class="badge bg-body-tertiary text-body">
-                                                    Основные
-                                                </div>
-                                            </div>
-                                            <h5 class="mb-5">Основы SQL</h5>
-                                            <div class="text-end mt-auto">
-                                                <a class="stretched-link text-decoration-none text-body align-bottom" href="/courses/sql-basics/goto">Повторить</a>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="col-lg-4 col-md-6 col-12">
-                                    <div class="card shadow-sm x-shadow-fade-in h-100 border-top">
-                                        <div class="card-header p-1 bg-success"></div>
-                                        <div class="card-body h-100 d-flex flex-column">
-                                            <div class="mb-1">
-                                                <div class="badge bg-body-tertiary text-body">
-                                                    Основные
-                                                </div>
-                                            </div>
-                                            <h5 class="mb-5">Java: Веб-технологии</h5>
-                                            <div class="text-end mt-auto">
-                                                <a class="stretched-link text-decoration-none text-body align-bottom" href="/courses/java-web/goto">Повторить</a>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="col-lg-4 col-md-6 col-12">
-                                    <div class="card shadow-sm x-shadow-fade-in h-100 border-top">
-                                        <div class="card-header p-1 bg-info"></div>
-                                        <div class="card-body h-100 d-flex flex-column">
-                                            <div class="mb-1">
-                                                <div class="badge bg-body-tertiary text-body">
-                                                    Основные
-                                                </div>
-                                            </div>
-                                            <h5 class="mb-5">Bootstrap 5: Основы верстки</h5>
-                                            <div class="text-end mt-auto">
-                                                <a class="stretched-link text-decoration-none text-body align-bottom" href="/courses/bootstrap-basic/goto">Продолжить</a>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="col-lg-4 col-md-6 col-12">
-                                    <div class="card shadow-sm x-shadow-fade-in h-100 border-top">
-                                        <div class="card-header p-1 bg-success"></div>
-                                        <div class="card-body h-100 d-flex flex-column">
-                                            <div class="mb-1">
-                                                <div class="badge bg-body-tertiary text-body">
-                                                    Испытание
-                                                </div>
-                                            </div>
-                                            <h5 class="mb-5">Кастомные аннотации</h5>
-                                            <div class="text-end mt-auto">
-                                                <a class="stretched-link text-decoration-none text-body align-bottom" href="/challenges/java_spring_custom_annotations_exercise/instance">Повторить</a>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="col-lg-4 col-md-6 col-12">
-                                    <div class="card shadow-sm x-shadow-fade-in h-100 border-top">
-                                        <div class="card-header p-1 bg-success"></div>
-                                        <div class="card-body h-100 d-flex flex-column">
-                                            <div class="mb-1">
-                                                <div class="badge bg-body-tertiary text-body">
-                                                    Испытание
-                                                </div>
-                                            </div>
-                                            <h5 class="mb-5">Жизненный цикл</h5>
-                                            <div class="text-end mt-auto">
-                                                <a class="stretched-link text-decoration-none text-body align-bottom" href="/challenges/java_spring_lifecycle_exercise/instance">Повторить</a>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
+                                @endfor
                             </div>
-
                         </div>
-
-
-
                     </div>
-
                 </div>
             </div>
         </div>

@@ -40,23 +40,23 @@ content = @`
             <div class="col-sm overflow-hidden">
                 <div class="mb-4">
                     <div class="row">
-                    @if(page.getUser().getRole().equals("master"))
+
                         <div class="mb-5 pt-4">
-                            <h2 class="h4 mb-4">Мом услуги</h2>
+                            <h2 class="h4 mb-4">Мом заказы</h2>
                             <div class="row gy-3">
-                                @for(var service : page.getServices())
+                                @for(var order : page.getOrders())
                                     <div class="col-lg-4 col-md-6 col-12">
                                         <div class="card shadow-sm x-shadow-fade-in h-100 border-top">
                                             <div class="card-header p-1 bg-info"></div>
                                             <div class="card-body h-100 d-flex flex-column">
                                                 <div class="mb-1">
                                                     <div class="badge bg-body-tertiary text-body">
-                                                        ${service.getName()} - ${service.getPrice()}
+                                                        ${order.getService().getName()} - ${order.getPrice()}
                                                     </div>
                                                 </div>
-                                                <h5 class="mb-5">${service.getDescription()}</h5>
+                                                <h5 class="mb-5">${order.getOrderDate().toString()}</h5>
                                                 <div class="text-end mt-auto">
-                                                    <a class="stretched-link text-decoration-none text-body align-bottom" href="${page.getEditServicesPath(service.getId())}">Просмотр</a>
+                                                    <a class="stretched-link text-decoration-none text-body align-bottom" href="${page.getEditServicesPath(order.getId())}">Просмотр</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -64,31 +64,6 @@ content = @`
                                 @endfor
                             </div>
                         </div>
-                    @else
-                        <div class="mb-5 pt-4">
-                            <h2 class="h4 mb-4">Услуги мастера</h2>
-                            <div class="row gy-3">
-                                @for(var service : page.getServices())
-                                    <div class="col-lg-4 col-md-6 col-12">
-                                        <div class="card shadow-sm x-shadow-fade-in h-100 border-top">
-                                            <div class="card-header p-1 bg-info"></div>
-                                            <div class="card-body h-100 d-flex flex-column">
-                                                <div class="mb-1">
-                                                    <div class="badge bg-body-tertiary text-body">
-                                                        ${service.getName()} - ${service.getPrice()}
-                                                    </div>
-                                                </div>
-                                                <h5 class="mb-5">${service.getDescription()}</h5>
-                                                <div class="text-end mt-auto">
-                                                    <a class="stretched-link text-decoration-none text-body align-bottom" href="${page.getOrdersByServicePath(service.getId())}">Выбрать</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endfor
-                            </div>
-                        </div>
-                    @endif
                     </div>
                 </div>
             </div>

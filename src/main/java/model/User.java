@@ -6,7 +6,6 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Setter
@@ -31,14 +30,6 @@ public class User {
 
     @Column(length = 30)
     private String role;
-
-    @OneToMany
-    @JoinColumn(name = "user_id")
-    private List<Service> services;
-
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    private Order order;
 
     @CreationTimestamp
     @Column(name = "create_date")

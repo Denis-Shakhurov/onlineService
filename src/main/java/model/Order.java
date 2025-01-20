@@ -34,4 +34,12 @@ public class Order {
     @UpdateTimestamp
     @Column(name = "update_date")
     private LocalDateTime updateDate;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "service_id")
+    private Service service;
 }
