@@ -93,7 +93,16 @@ import static io.javalin.rendering.template.TemplateUtil.model;
 
         getFormParamAndSetUser(ctx, user);
 
-        if (!userService.existsByEmail(user.getEmail())) {
+        if (ctx.formParam("email").equals("")) {
+            User updatedUser = userService.update(user);
+
+            ctx.cookie(USER_ID, String.valueOf(id));
+            addTokenInCookie(ctx, updatedUser, provider);
+
+            ctx.sessionAttribute(FLASH, "Изменения сохранены");
+            ctx.status(HttpStatus.OK);
+            ctx.redirect(namedRoutes.getUserPath(id));
+        } else if (!userService.existsByEmail(user.getEmail())) {
             User updatedUser = userService.update(user);
 
             ctx.cookie(USER_ID, String.valueOf(id));
