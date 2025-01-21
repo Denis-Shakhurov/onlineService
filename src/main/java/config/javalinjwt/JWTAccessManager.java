@@ -3,6 +3,7 @@ package config.javalinjwt;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
+import io.javalin.http.HttpStatus;
 import io.javalin.http.UnauthorizedResponse;
 import io.javalin.security.RouteRole;
 import org.jetbrains.annotations.NotNull;
@@ -39,7 +40,9 @@ public class JWTAccessManager implements Handler {
         RouteRole role = extractRole(context);
         Set<RouteRole> permittedRoles = context.routeRoles();
         if (!permittedRoles.contains(role)) {
-            throw new UnauthorizedResponse();
+            context.sessionAttribute("flash", "Необходимо аторизироваться");
+            context.status(HttpStatus.UNAUTHORIZED);
+            context.redirect("/");
         }
     }
 }

@@ -8,6 +8,7 @@ import dto.UsersPage;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 import io.javalin.http.NotFoundResponse;
+import io.javalin.http.UnauthorizedResponse;
 import model.Order;
 import model.User;
 import service.OrderService;
@@ -64,21 +65,27 @@ import static io.javalin.rendering.template.TemplateUtil.model;
                 .orElseThrow(() -> new NotFoundResponse("User with id " + id + " not found"));
         UserPage userPage = new UserPage();
 
-        if (user.getRole().equals("user")) {
-            List<Order> orders = orderService.findAllByUserId(id);
+        try {
+            if (user.getRole().equals("user")) {
+                List<Order> orders = orderService.findAllByUserId(id);
 
-            userPage.setOrders(orders);
-        } else {
-            List<Order> orders = orderService.getAllByServicesByUserId(id);
-            userPage.setOrders(orders);
+                userPage.setOrders(orders);
+            } else {
+                List<Order> orders = orderService.getAllByServicesByUserId(id);
+                userPage.setOrders(orders);
+            }
+
+            userPage.setUser(user);
+            addUserInfoInBasePage(userPage, user);
+            userPage.setFlash(ctx.consumeSessionAttribute(FLASH));
+
+            ctx.status(HttpStatus.OK);
+            ctx.render("users/show.jte", model(PAGE, userPage));
+        } catch (UnauthorizedResponse e) {
+            ctx.sessionAttribute(FLASH, "Необходимо авторизироваться");
+            ctx.status(HttpStatus.UNAUTHORIZED);
+            ctx.redirect(namedRoutes.getStartPath());
         }
-
-        userPage.setUser(user);
-        addUserInfoInBasePage(userPage, user);
-        userPage.setFlash(ctx.consumeSessionAttribute(FLASH));
-
-        ctx.status(HttpStatus.OK);
-        ctx.render("users/show.jte", model(PAGE, userPage));
     }
 
     public void create(Context ctx, String role) {

@@ -31,21 +31,6 @@ public class OrderController extends BaseController {
         this.serviceService = serviceService;
     }
 
-    public void index(Context ctx) {
-        int userId = Integer.parseInt(Objects.requireNonNull(ctx.cookie(USER_ID)));
-
-        List<Order> orders = orderService.findAllByUserId(userId);
-        User user = userService.findById(userId)
-                .orElseThrow(() -> new NotFoundResponse("User Not Found"));
-
-        UserPage userPage = new UserPage();
-        userPage.setUser(user);
-        userPage.setOrders(orders);
-
-        ctx.status(HttpStatus.OK);
-        ctx.render("orders/index.jte", model(PAGE, userPage));
-    }
-
     public void indexCreate(Context ctx) {
         BasePage basePage = new BasePage();
 
@@ -60,6 +45,7 @@ public class OrderController extends BaseController {
         Service service = serviceService.findById(serviceId)
                         .orElseThrow(() -> new NotFoundResponse("Service Not Found"));
         basePage.setService(service);
+        basePage.setFlash(ctx.consumeSessionAttribute(FLASH));
 
         ctx.status(HttpStatus.OK);
         ctx.render("orders/create.jte", model(PAGE, basePage));
@@ -70,21 +56,27 @@ public class OrderController extends BaseController {
         int serviceId = Integer.parseInt(ctx.pathParam(ID));
         LocalDateTime date = LocalDateTime.parse(ctx.formParam("date"));
 
-        Service service = serviceService.findById(serviceId)
-                .orElseThrow(() -> new NotFoundResponse("Service Not Found"));
-        User user = userService.findById(userId)
-                .orElseThrow(() -> new NotFoundResponse("User Not Found"));
+        if (date.isAfter(LocalDateTime.now())) {
+            Service service = serviceService.findById(serviceId)
+                    .orElseThrow(() -> new NotFoundResponse("Service Not Found"));
+            User user = userService.findById(userId)
+                    .orElseThrow(() -> new NotFoundResponse("User Not Found"));
 
-        Order order = new Order();
-        order.setUser(user);
-        order.setService(service);
-        order.setOrderStatus(OrderStatus.CREATED);
-        order.setPrice(service.getPrice());
-        order.setOrderDate(date);
+            Order order = new Order();
+            order.setUser(user);
+            order.setService(service);
+            order.setOrderStatus(OrderStatus.CREATED);
+            order.setPrice(service.getPrice());
+            order.setOrderDate(date);
 
-        orderService.save(order);
+            orderService.save(order);
 
-        ctx.status(HttpStatus.CREATED);
-        ctx.redirect(namedRoutes.getUserPath(userId));
+            ctx.status(HttpStatus.CREATED);
+            ctx.redirect(namedRoutes.getUserPath(userId));
+        } else {
+            ctx.sessionAttribute(FLASH, "Некорректная дата");
+            ctx.status(HttpStatus.BAD_REQUEST);
+            ctx.redirect(namedRoutes.getOrdersByServicePath(serviceId));
+        }
     }
 }

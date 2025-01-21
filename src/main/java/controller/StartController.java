@@ -3,6 +3,7 @@ package controller;
 import dto.BasePage;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
+import io.javalin.http.UnauthorizedResponse;
 import model.User;
 import service.UserService;
 
@@ -29,7 +30,7 @@ public class StartController extends BaseController{
 
         List<User> masters = userService.getAllByRole("master");
         basePage.setMasters(masters);
-
+        basePage.setFlash(ctx.consumeSessionAttribute(FLASH));
         ctx.status(HttpStatus.OK);
         ctx.render("start.jte", model(PAGE, basePage));
     }

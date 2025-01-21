@@ -29,10 +29,17 @@ content = @`
             </div>
         </nav>
         @if(page.getFlash() != null)
-            <div class="rounded-0 m-0 alert alert-dismissible fade show alert-success" role="alert">
-                <p class="m-0">${page.getFlash()}</p>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
+            @if(page.getFlash().equals("Необходимо авторизироваться"))
+                <div class="rounded-0 m-0 alert alert-dismissible fade show alert-warning" role="alert">
+                    <p class="m-0">${page.getFlash()}</p>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @else
+                <div class="rounded-0 m-0 alert alert-dismissible fade show alert-success" role="alert">
+                    <p class="m-0">${page.getFlash()}</p>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
         @endif
         <div class="container-xxl mb-6">
             <div class="row">
@@ -50,10 +57,10 @@ content = @`
                                         <div class="card-body h-100 d-flex flex-column">
                                             <div class="mb-1">
                                                 <div class="badge bg-body-tertiary text-body">
-                                                    ${master.getFirstName()} ${master.getLastName()}
+                                                    <h5 class="mb-5">${master.getFirstName()} ${master.getLastName()}</h5>
                                                 </div>
                                             </div>
-                                            <h5 class="mb-5">Трудоустройство для разработчиков</h5>
+                                            <h5 class="mb-5"></h5>
                                             <div class="text-end mt-auto">
                                                 <a class="stretched-link text-decoration-none text-body align-bottom" href="${page.getServicesByUserPath(master.getId())}">Выбрать</a>
                                             </div>

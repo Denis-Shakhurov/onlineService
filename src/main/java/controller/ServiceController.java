@@ -5,6 +5,7 @@ import dto.UserPage;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 import io.javalin.http.NotFoundResponse;
+import io.javalin.http.UnauthorizedResponse;
 import model.Service;
 import model.User;
 import service.ServiceService;
@@ -25,21 +26,27 @@ public class ServiceController extends BaseController {
     }
 
     public void index(Context ctx) {
-        int masterId = Integer.parseInt(ctx.pathParam(ID));
-        int userId = Integer.parseInt(Objects.requireNonNull(ctx.cookie(USER_ID)));
+        if (!ctx.cookie(USER_ID).equals("")) {
+            int masterId = Integer.parseInt(ctx.pathParam(ID));
+            int userId = Integer.parseInt(Objects.requireNonNull(ctx.cookie(USER_ID)));
 
 
-        List<Service> services = serviceService.findAllForUser(masterId);
-        User user = userService.findById(userId)
-                .orElseThrow(() -> new NotFoundResponse("Service not found"));
+            List<Service> services = serviceService.findAllForUser(masterId);
+            User user = userService.findById(userId)
+                    .orElseThrow(() -> new NotFoundResponse("Service not found"));
 
-        UserPage userPage = new UserPage();
-        userPage.setServices(services);
-        userPage.setUser(user);
-        userPage.setFlash(ctx.consumeSessionAttribute(FLASH));
+            UserPage userPage = new UserPage();
+            userPage.setServices(services);
+            userPage.setUser(user);
+            userPage.setFlash(ctx.consumeSessionAttribute(FLASH));
 
-        ctx.status(HttpStatus.OK);
-        ctx.render("services/index.jte", model(PAGE, userPage));
+            ctx.status(HttpStatus.OK);
+            ctx.render("services/index.jte", model(PAGE, userPage));
+    } else {
+            ctx.sessionAttribute(FLASH, "Необходимо авторизироваться");
+            ctx.status(HttpStatus.UNAUTHORIZED);
+            ctx.redirect(namedRoutes.getStartPath());
+        }
     }
 
     public void indexCreate(Context ctx) {
