@@ -1,7 +1,6 @@
 package controller;
 
 import dto.BasePage;
-import dto.UserPage;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 import io.javalin.http.NotFoundResponse;
@@ -13,9 +12,7 @@ import service.OrderService;
 import service.ServiceService;
 import service.UserService;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Objects;
 
 import static io.javalin.rendering.template.TemplateUtil.model;
