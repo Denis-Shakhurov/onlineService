@@ -30,14 +30,14 @@ import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.*;
 
 public class UserControllerTest {
-    Javalin app;
+    private Javalin app;
     private static MockWebServer mockBackEnd;
     private Context ctx;
     private final CreateApp createApp = new CreateApp();
     private UserService userService;
     private OrderService orderService;
     private Provider provider;
-    JWTProvider<User> jwtProvider;
+    private JWTProvider<User> jwtProvider;
     private UserController controller;
     private NamedRoutes namedRoutes;
 
