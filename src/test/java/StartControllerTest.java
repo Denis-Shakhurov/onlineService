@@ -20,7 +20,7 @@ import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.*;
 
 public class StartControllerTest {
-    private Javalin app;
+    Javalin app;
     private static MockWebServer mockBackEnd;
     private Context ctx;
     private final CreateApp createApp = new CreateApp();

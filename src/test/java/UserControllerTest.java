@@ -30,7 +30,7 @@ import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.*;
 
 public class UserControllerTest {
-    private Javalin app;
+    Javalin app;
     private static MockWebServer mockBackEnd;
     private Context ctx;
     private final CreateApp createApp = new CreateApp();
