@@ -19,13 +19,14 @@ import java.util.Objects;
 import static io.javalin.rendering.template.TemplateUtil.model;
 
     public class UserController extends BaseController {
-        private final Provider provider = new Provider();
+        private final Provider provider;
         private final UserService userService;
         private final OrderService orderService;
 
-    public UserController(UserService userService, OrderService orderService) {
+    public UserController(UserService userService, OrderService orderService, Provider provider) {
         this.userService = userService;
         this.orderService = orderService;
+        this.provider = provider;
     }
 
     public void index(Context ctx) {

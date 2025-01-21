@@ -10,7 +10,7 @@ import model.User;
 
 public class Provider {
 
-    public static JWTProvider<User> create() {
+    public JWTProvider<User> create() {
         JWTGenerator<User> generator = (user, alg) -> {
             JWTCreator.Builder token = JWT.create()
                     .withClaim("name", user.getFirstName())

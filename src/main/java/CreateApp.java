@@ -1,20 +1,32 @@
+import config.Provider;
+import config.javalinjwt.JWTAccessManager;
+import config.javalinjwt.JWTProvider;
+import config.javalinjwt.JavalinJWT;
 import controller.*;
 import gg.jte.ContentType;
 import gg.jte.TemplateEngine;
 import gg.jte.resolve.ResourceCodeResolver;
 import io.javalin.Javalin;
+import io.javalin.http.Handler;
 import io.javalin.rendering.template.JavalinJte;
+import io.javalin.security.RouteRole;
+import model.Role;
+import model.User;
 import service.OrderService;
 import service.ServiceService;
 import service.UserService;
 import utils.NamedRoutes;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class CreateApp {
+    private final Provider provider = new Provider();
     private final NamedRoutes namedRoutes = new NamedRoutes();
     private final UserService userService = new UserService();
     private final OrderService orderService = new OrderService();
     private final ServiceService serviceService = new ServiceService();
-    private final UserController userController = new UserController(userService, orderService);
+    private final UserController userController = new UserController(userService, orderService, provider);
     private final ServiceController serviceController = new ServiceController(serviceService, userService);
     private final RegistrationController registrationController = new RegistrationController();
     private final StartController startController = new StartController(userService);
@@ -32,30 +44,47 @@ public class CreateApp {
             config.bundledPlugins.enableDevLogging();
         });
 
-        app.get(namedRoutes.getUsersPath(), userController::index);
-        app.get(namedRoutes.getUserPath("{id}"), userController::show);
-        app.get(namedRoutes.getEditUserPath("{id}"), userController::indexEdit);
-        app.post(namedRoutes.getEditUserPath("{id}"), userController::update);
-        app.post(namedRoutes.getLoginUserPath(), userController::login);
-        app.get(namedRoutes.getLoginUserPath(), userController::indexLogin);
-        app.get(namedRoutes.getLogoutUserPath(), userController::logout);
+        // create the provider
+        JWTProvider<User> providerUser = provider.create();
 
-        app.get(namedRoutes.getServicesByUserPath("{id}"), serviceController::index);
-        app.post(namedRoutes.getServicesPath(), serviceController::create);
-        app.get(namedRoutes.getServicesPath(), serviceController::indexCreate);
-        app.get(namedRoutes.getEditServicesPath("{id}"), serviceController::indexEdit);
-        app.post(namedRoutes.getEditServicesPath("{id}"), serviceController::update);
+        Handler decodeHandler = JavalinJWT.createCookieDecodeHandler(providerUser);
+        // create the access manager
+        Map<String, RouteRole> rolesMapping = new HashMap<>() {{
+            put("user", Role.USER);
+            put("master", Role.MASTER);
+            put("admin", Role.ADMIN);
+        }};
 
-        app.get(namedRoutes.getOrdersByServicePath("{id}"), orderController::indexCreate);
-        app.post(namedRoutes.getOrdersByServicePath("{id}"), orderController::create);
+        JWTAccessManager accessManager = new JWTAccessManager("role", rolesMapping, Role.GUEST);
 
-        app.get(namedRoutes.getStartPath(), startController::index);
+        // set the paths
+        app.before(decodeHandler);
+        app.beforeMatched(accessManager);
 
-        app.get(namedRoutes.getRegistrationPath(), registrationController::index);
-        app.get(namedRoutes.getRegistrationUserPath(), registrationController::indexUser);
-        app.get(namedRoutes.getRegistrationMasterPath(), registrationController::indexMaster);
-        app.post(namedRoutes.getRegistrationUserPath(), ctx -> {userController.create(ctx, "user");});
-        app.post(namedRoutes.getRegistrationMasterPath(), ctx -> {userController.create(ctx, "master");});
+        app.get(namedRoutes.getUsersPath(), userController::index, Role.USER, Role.MASTER);
+        app.get(namedRoutes.getUserPath("{id}"), userController::show, Role.USER, Role.MASTER);
+        app.get(namedRoutes.getEditUserPath("{id}"), userController::indexEdit, Role.USER, Role.MASTER);
+        app.post(namedRoutes.getEditUserPath("{id}"), userController::update, Role.USER, Role.MASTER);
+        app.post(namedRoutes.getLoginUserPath(), userController::login, Role.USER, Role.MASTER, Role.GUEST);
+        app.get(namedRoutes.getLoginUserPath(), userController::indexLogin, Role.USER, Role.MASTER, Role.GUEST);
+        app.get(namedRoutes.getLogoutUserPath(), userController::logout, Role.USER, Role.MASTER, Role.GUEST);
+
+        app.get(namedRoutes.getServicesByUserPath("{id}"), serviceController::index, Role.USER, Role.MASTER);
+        app.post(namedRoutes.getServicesPath(), serviceController::create, Role.USER, Role.MASTER);
+        app.get(namedRoutes.getServicesPath(), serviceController::indexCreate, Role.USER, Role.MASTER);
+        app.get(namedRoutes.getEditServicesPath("{id}"), serviceController::indexEdit, Role.USER, Role.MASTER);
+        app.post(namedRoutes.getEditServicesPath("{id}"), serviceController::update, Role.USER, Role.MASTER);
+
+        app.get(namedRoutes.getOrdersByServicePath("{id}"), orderController::indexCreate, Role.USER);
+        app.post(namedRoutes.getOrdersByServicePath("{id}"), orderController::create, Role.USER);
+
+        app.get(namedRoutes.getStartPath(), startController::index, Role.GUEST, Role.USER, Role.MASTER);
+
+        app.get(namedRoutes.getRegistrationPath(), registrationController::index, Role.USER, Role.GUEST, Role.MASTER);
+        app.get(namedRoutes.getRegistrationUserPath(), registrationController::indexUser, Role.USER, Role.GUEST, Role.MASTER);
+        app.get(namedRoutes.getRegistrationMasterPath(), registrationController::indexMaster, Role.USER, Role.GUEST, Role.MASTER);
+        app.post(namedRoutes.getRegistrationUserPath(), ctx -> {userController.create(ctx, "user");}, Role.USER, Role.GUEST, Role.MASTER);
+        app.post(namedRoutes.getRegistrationMasterPath(), ctx -> {userController.create(ctx, "master");}, Role.USER, Role.GUEST, Role.MASTER);
 
         return app;
     }
