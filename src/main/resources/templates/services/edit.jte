@@ -4,7 +4,7 @@
 @template.layout.page(
 content = @`
     <body class="min-vh-100">
-    <nav class="navbar navbar-dark navbar-expand-md bg-primary py-3">
+    <nav class="navbar navbar-dark navbar-expand-md bg-dark py-3">
         <div class="container"><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-6"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse flex-grow-0 order-md-first" id="navcol-6">
                 <ul class="navbar-nav me-auto">

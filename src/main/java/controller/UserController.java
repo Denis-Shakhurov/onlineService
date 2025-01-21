@@ -61,15 +61,21 @@ import static io.javalin.rendering.template.TemplateUtil.model;
 
         User user = userService.findById(id)
                 .orElseThrow(() -> new NotFoundResponse("User with id " + id + " not found"));
-
-        List<Order> orders = orderService.findAllByUserId(id);
-
         UserPage userPage = new UserPage();
-        userPage.setUser(user);
-        userPage.setOrders(orders);
-        addUserInfoInBasePage(userPage, user);
 
+        if (user.getRole().equals("user")) {
+            List<Order> orders = orderService.findAllByUserId(id);
+
+            userPage.setOrders(orders);
+        } else {
+            List<Order> orders = orderService.getAllByServicesByUserId(id);
+            userPage.setOrders(orders);
+        }
+
+        userPage.setUser(user);
+        addUserInfoInBasePage(userPage, user);
         userPage.setFlash(ctx.consumeSessionAttribute(FLASH));
+
         ctx.status(HttpStatus.OK);
         ctx.render("users/show.jte", model(PAGE, userPage));
     }

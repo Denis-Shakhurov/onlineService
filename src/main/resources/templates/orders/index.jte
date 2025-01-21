@@ -1,10 +1,11 @@
 @import dto.UserPage
+@import java.time.format.DateTimeFormatter
 @param UserPage page
 
 @template.layout.page(
 content = @`
     <body class="min-vh-100">
-    <nav class="navbar navbar-dark navbar-expand-md bg-primary py-3">
+    <nav class="navbar navbar-dark navbar-expand-md bg-dark py-3">
         <div class="container"><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-6"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse flex-grow-0 order-md-first" id="navcol-6">
                 <ul class="navbar-nav me-auto">
@@ -54,7 +55,7 @@ content = @`
                                                         ${order.getService().getName()} - ${order.getPrice()}
                                                     </div>
                                                 </div>
-                                                <h5 class="mb-5">${order.getOrderDate().toString()}</h5>
+                                                <h5 class="mb-5">${order.getOrderDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm"))}</h5>
                                                 <div class="text-end mt-auto">
                                                     <a class="stretched-link text-decoration-none text-body align-bottom" href="${page.getEditServicesPath(order.getId())}">Просмотр</a>
                                                 </div>

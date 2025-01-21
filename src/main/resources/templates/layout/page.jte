@@ -15,7 +15,7 @@
 <main class="flex-grow-1">
     ${content}
 </main>
-<footer class="footer border-top py-3 mt-50 bg-primary text-white">
+<footer class="footer border-top py-3 mt-50 bg-dark text-white">
     <div class="container-xl">
         <div class="text-center">
             created by

@@ -4,7 +4,7 @@
 @template.layout.page(
 content = @`
         <body class="min-vh-100">
-        <nav class="navbar navbar-dark navbar-expand-md bg-primary py-3">
+        <nav class="navbar navbar-dark navbar-expand-md bg-dark py-3">
             <div class="container"><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-6"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse flex-grow-0 order-md-first" id="navcol-6">
                     <ul class="navbar-nav me-auto">
@@ -41,7 +41,6 @@ content = @`
                         <div class="row">
 
                         <div class="mb-5 pt-4">
-                            @if(page.getUserInfo() != null && page.getUserInfo().getRole().equals("user"))
                             <h2 class="h4 mb-4">Мастера</h2>
                             <div class="row gy-3">
                                 @for(var master : page.getMasters())
@@ -62,25 +61,6 @@ content = @`
                                     </div>
                                 </div>
                                 @endfor
-                                @else
-                                <h2 class="h4 mb-4">Заказы на мои услуги</h2>
-                                <div class="row gy-3">
-                                    <div class="col-lg-4 col-md-6 col-12">
-                                        <div class="card shadow-sm x-shadow-fade-in h-100 border-top">
-                                            <div class="card-header p-1 bg-info"></div>
-                                            <div class="card-body h-100 d-flex flex-column">
-                                                <div class="mb-1">
-                                                    <div class="badge bg-body-tertiary text-body">Основные</div>
-                                                </div>
-                                                <h5 class="mb-5">Bootstrap 5: Основы верстки</h5>
-                                                <div class="text-end mt-auto">
-                                                    <a class="stretched-link text-decoration-none text-body align-bottom" href="/courses/bootstrap-basic/goto">Продолжить</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                @endif
                             </div>
                         </div>
                         </div>

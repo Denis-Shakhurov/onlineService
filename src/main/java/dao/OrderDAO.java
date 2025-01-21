@@ -19,7 +19,12 @@ public class OrderDAO extends BaseDAO<Order> {
         CriteriaBuilder builder = getCurrentSession().getCriteriaBuilder();
         CriteriaQuery<Order> criteria = builder.createQuery(Order.class);
         Root<Order> root = criteria.from(Order.class);
-        criteria.select(root).where(builder.equal(root.get("user"), userId));
+
+        criteria
+                .select(root)
+                .where(builder.equal(root.get("user"), userId))
+                .orderBy(builder.desc(root.get("orderDate")));
+
         return getCurrentSession().createQuery(criteria).getResultList();
     }
 
@@ -34,13 +39,13 @@ public class OrderDAO extends BaseDAO<Order> {
 
         criteriaService
                 .select(serviceRoot.get("id"))
-                .where(builder.equal(serviceRoot.get("userId"), userId));
+                .where(builder.equal(serviceRoot.get("user"), userId));
 
         criteriaOrder
                 .select(orderRoot)
-                .where(orderRoot
-                        .get("serviceId")
-                        .in(getCurrentSession().createQuery(criteriaService).getResultList()));
+                .where(orderRoot.get("service")
+                        .in(getCurrentSession().createQuery(criteriaService).getResultList()))
+                .orderBy(builder.asc(orderRoot.get("orderDate")));
 
         return getCurrentSession().createQuery(criteriaOrder).getResultList();
     }
