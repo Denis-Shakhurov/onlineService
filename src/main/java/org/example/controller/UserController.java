@@ -13,6 +13,7 @@ import org.example.model.User;
 import org.example.service.OrderService;
 import org.example.service.UserService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -63,13 +64,13 @@ import static io.javalin.rendering.template.TemplateUtil.model;
         User user = userService.findById(id)
                 .orElseThrow(() -> new NotFoundResponse("User with id " + id + " not found"));
         UserPage userPage = new UserPage();
+        List<Order> orders = new ArrayList<>();
 
         if (user.getRole().equals("user")) {
-            List<Order> orders = orderService.findAllByUserId(id);
-
+            orders.addAll(orderService.findAllByUserId(id));
             userPage.setOrders(orders);
         } else {
-            List<Order> orders = orderService.getAllByServicesByUserId(id);
+            orders.addAll(orderService.getAllByServicesByUserId(id));
             userPage.setOrders(orders);
         }
 

@@ -31,7 +31,7 @@ public class CreateApp {
     private final UserController userController = new UserController(userService, orderService, provider);
     private final ServiceController serviceController = new ServiceController(serviceService, userService);
     private final RegistrationController registrationController = new RegistrationController();
-    private final StartController startController = new StartController(userService);
+    private final StartController startController = new StartController(userService, orderService);
     private final OrderController orderController = new OrderController(orderService, userService, serviceService);
 
     private TemplateEngine createTemplateEngine() {

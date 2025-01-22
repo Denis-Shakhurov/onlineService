@@ -1,4 +1,5 @@
 @import org.example.dto.BasePage
+@import java.time.format.DateTimeFormatter
 @param BasePage page
 
 @template.layout.page(
@@ -46,7 +47,7 @@ content = @`
                 <div class="col-sm overflow-hidden">
                     <div class="mb-4">
                         <div class="row">
-
+                        @if(page.getUserInfo() == null || page.getUserInfo().getRole().equals("user"))
                         <div class="mb-5 pt-4">
                             <h2 class="h4 mb-4">Мастера</h2>
                             <div class="row gy-3">
@@ -70,6 +71,32 @@ content = @`
                                 @endfor
                             </div>
                         </div>
+                            @elseif(page.getUserInfo() != null && page.getUserInfo().getRole().equals("master"))
+                            <div class="mb-5 pt-4">
+                                <h2 class="h4 mb-4">Текущие заказы на мои услуги</h2>
+                                <div class="row gy-3">
+                                    @for(var order : page.getOrders())
+                                        <div class="col-lg-4 col-md-6 col-12">
+                                            <div class="card shadow-sm x-shadow-fade-in h-100 border-top">
+                                                <div class="card-header p-1 bg-info"></div>
+                                                <div class="card-body h-100 d-flex flex-column">
+                                                    <div class="mb-1">
+                                                        <div class="badge bg-body-tertiary text-body">
+                                                            ${order.getService().getName()} - ${order.getPrice()}
+                                                        </div>
+                                                    </div>
+                                                    <h5 class="mb-5">${order.getUser().getFirstName()} ${order.getUser().getLastName()}</h5>
+                                                    <h5 class="mb-5">Запись на дату: ${order.getOrderDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm"))}</h5>
+                                                    <div class="text-end mt-auto">
+                                                        <a class="stretched-link text-decoration-none text-body align-bottom" href="">Отметить как исполнено</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endfor
+                                </div>
+                            </div>
+                            @endif
                         </div>
                     </div>
                 </div>

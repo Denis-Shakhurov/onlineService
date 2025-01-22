@@ -54,11 +54,13 @@ content = @`
                                         <div class="text-body-secondary">
                                             @if(page.getOrders().isEmpty())
                                             <span class="d-inline-block">Послежний заказ - пока нет заказов</span>
-                                            @elseif(page.getUser().getRole().equals("user"))
-                                                <span class="d-inline-block">Послежний заказ - ${page.getOrders().getFirst().getOrderDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))}</span>
+                                            @else
+                                                @if(page.getUser().getRole().equals("user"))
+                                                <span class="d-inline-block">Послежний заказ - ${page.getOrders().get(0).getOrderDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))}</span>
                                                 @else
-                                                <span class="d-inline-block">Ближайший заказ - ${page.getOrders().getFirst().getOrderDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm"))}</span>
+                                                <span class="d-inline-block">Ближайший заказ - ${page.getOrders().get(0).getOrderDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm"))}</span>
                                                 @endif
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -110,29 +112,32 @@ content = @`
                             </div>
                         </div>
                                 @else
-                                <div class="mb-5 pt-4">
-                                    <h2 class="h4 mb-4">Текущие заказы на мои услуги</h2>
-                                    <div class="row gy-3">
+                                <div class="container-lg mt-5">
+                                    <h2 class="h4 mb-4">Все заказы на мои услуги</h2>
+                                    <table class="table table-bordered table-hover mt-3">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">Название услуги</th>
+                                            <th scope="col">Пользователь</th>
+                                            <th scope="col">Email пользователя</th>
+                                            <th scope="col">Стоимость услуги</th>
+                                            <th scope="col">Дата услуги</th>
+                                            <th scope="col">Статус услуги</th>
+                                        </tr>
+                                        </thead>
                                         @for(var order : page.getOrders())
-                                            <div class="col-lg-4 col-md-6 col-12">
-                                                <div class="card shadow-sm x-shadow-fade-in h-100 border-top">
-                                                    <div class="card-header p-1 bg-info"></div>
-                                                    <div class="card-body h-100 d-flex flex-column">
-                                                        <div class="mb-1">
-                                                            <div class="badge bg-body-tertiary text-body">
-                                                                ${order.getService().getName()} - ${order.getPrice()}
-                                                            </div>
-                                                        </div>
-                                                        <h5 class="mb-5">${order.getUser().getFirstName()} ${order.getUser().getLastName()}</h5>
-                                                        <h5 class="mb-5">Запись на дату: ${order.getOrderDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm"))}</h5>
-                                                        <div class="text-end mt-auto">
-                                                            <a class="stretched-link text-decoration-none text-body align-bottom" href="">Отметить как исполнено</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <tbody>
+                                            <tr>
+                                                <th scope="row">${order.getService().getName()}</th>
+                                                <th scope="row">${order.getUser().getFirstName()} ${order.getUser().getLastName()}</th>
+                                                <th scope="row">${order.getUser().getEmail()}</th>
+                                                <th scope="row">${order.getService().getPrice()}</th>
+                                                <th scope="row">${order.getOrderDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm"))}</th>
+                                                <th scope="row">${order.getOrderStatus()}</th>
+                                            </tr>
+                                            </tbody>
                                         @endfor
-                                    </div>
+                                    </table>
                                 </div>
                                 @endif
                             @endif

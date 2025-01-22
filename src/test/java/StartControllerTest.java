@@ -7,6 +7,7 @@ import io.javalin.http.HttpStatus;
 import org.example.model.User;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
+import org.example.service.OrderService;
 import org.junit.jupiter.api.*;
 import org.example.service.UserService;
 
@@ -26,6 +27,7 @@ public class StartControllerTest {
     private Context ctx;
     private final CreateApp createApp = new CreateApp();
     private UserService userService;
+    private OrderService orderService;
     private StartController controller;
 
     @BeforeAll
@@ -50,7 +52,8 @@ public class StartControllerTest {
         app = createApp.getApp();
         ctx = mock(Context.class);
         userService = mock(UserService.class);
-        controller = new StartController(userService);
+        orderService = mock(OrderService.class);
+        controller = new StartController(userService, orderService);
     }
 
     @Test
