@@ -138,7 +138,7 @@ public class OrderControllerTest {
 
         when(ctx.cookie("userId")).thenReturn("1");
         when(ctx.pathParam("id")).thenReturn("1");
-        when(ctx.formParam("date")).thenReturn(LocalDateTime.now().minusDays(1).toString());
+        when(ctx.formParam("date")).thenReturn(LocalDateTime.now().minusDays(1000).toString());
         when(userService.findById(1)).thenReturn(Optional.of(user));
         when(serviceService.findById(1)).thenReturn(Optional.of(service));
 
@@ -150,7 +150,7 @@ public class OrderControllerTest {
     }
 
     @Test
-    @DisplayName("Status code 404 returned for missing org.example.service/user")
+    @DisplayName("Status code 404 returned for missing service/user")
     public void createOrderWithMissingServiceUserTest() {
 
         when(ctx.cookie("userId")).thenReturn("1");
