@@ -1,13 +1,14 @@
-import controller.StartController;
-import dto.BasePage;
+import org.example.CreateApp;
+import org.example.controller.StartController;
+import org.example.dto.BasePage;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
-import model.User;
+import org.example.model.User;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.*;
-import service.UserService;
+import org.example.service.UserService;
 
 import java.io.IOException;
 import java.nio.file.Files;

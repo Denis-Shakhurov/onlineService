@@ -1,15 +1,16 @@
-import controller.ServiceController;
+import org.example.CreateApp;
+import org.example.controller.ServiceController;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 import io.javalin.http.NotFoundResponse;
-import model.Service;
-import model.User;
+import org.example.model.Service;
+import org.example.model.User;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.*;
-import service.ServiceService;
-import service.UserService;
+import org.example.service.ServiceService;
+import org.example.service.UserService;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -56,7 +57,7 @@ public class ServiceControllerTest {
     }
 
     @Test
-    @DisplayName("Successfully create new service with valid user ID and form parameters")
+    @DisplayName("Successfully create new org.example.service with valid user ID and form parameters")
     public void createServiceWithValidParamsTest() {
 
         User user = new User();
@@ -76,7 +77,7 @@ public class ServiceControllerTest {
     }
 
     @Test
-    @DisplayName("Successfully update existing service with all fields modified")
+    @DisplayName("Successfully update existing org.example.service with all fields modified")
     public void updateServiceWithAllFieldsModifiedTest() {
 
         User user = new User();
@@ -129,7 +130,7 @@ public class ServiceControllerTest {
     }
 
     @Test
-    @DisplayName("Successfully render create service form for authenticated user")
+    @DisplayName("Successfully render create org.example.service form for authenticated user")
     public void renderCreateServiceFormForAuthenticatedUserTest() {
 
         User user = new User();
@@ -158,7 +159,7 @@ public class ServiceControllerTest {
     }
 
     @Test
-    @DisplayName("Handle invalid service ID in path parameters")
+    @DisplayName("Handle invalid org.example.service ID in path parameters")
     public void updateWithInvalidServiceIdTest() {
 
         when(ctx.pathParam("id")).thenReturn("999");
@@ -171,7 +172,7 @@ public class ServiceControllerTest {
     }
 
     @Test
-    @DisplayName("Handle service not found during update operation")
+    @DisplayName("Handle org.example.service not found during update operation")
     public void updateServiceNotFoundTest() {
 
         when(ctx.pathParam("id")).thenReturn("1");

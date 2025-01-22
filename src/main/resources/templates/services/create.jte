@@ -1,4 +1,4 @@
-@import dto.BasePage
+@import org.example.dto.BasePage
 @param BasePage page
 
 @template.layout.page(

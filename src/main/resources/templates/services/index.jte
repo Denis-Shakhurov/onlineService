@@ -1,4 +1,4 @@
-@import dto.UserPage
+@import org.example.dto.UserPage
 @param UserPage page
 
 @template.layout.page(
@@ -44,19 +44,19 @@ content = @`
                         <div class="mb-5 pt-4">
                             <h2 class="h4 mb-4">Мом услуги</h2>
                             <div class="row gy-3">
-                                @for(var service : page.getServices())
+                                @for(var org.example.service : page.getServices())
                                     <div class="col-lg-4 col-md-6 col-12">
                                         <div class="card shadow-sm x-shadow-fade-in h-100 border-top">
                                             <div class="card-header p-1 bg-info"></div>
                                             <div class="card-body h-100 d-flex flex-column">
                                                 <div class="mb-1">
                                                     <div class="badge bg-body-tertiary text-body">
-                                                        ${service.getName()} - ${service.getPrice()}
+                                                        ${org.example.service.getName()} - ${org.example.service.getPrice()}
                                                     </div>
                                                 </div>
-                                                <h5 class="mb-5">${service.getDescription()}</h5>
+                                                <h5 class="mb-5">${org.example.service.getDescription()}</h5>
                                                 <div class="text-end mt-auto">
-                                                    <a class="stretched-link text-decoration-none text-body align-bottom" href="${page.getEditServicesPath(service.getId())}">Просмотр</a>
+                                                    <a class="stretched-link text-decoration-none text-body align-bottom" href="${page.getEditServicesPath(org.example.service.getId())}">Просмотр</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -68,19 +68,19 @@ content = @`
                         <div class="mb-5 pt-4">
                             <h2 class="h4 mb-4">Услуги мастера</h2>
                             <div class="row gy-3">
-                                @for(var service : page.getServices())
+                                @for(var org.example.service : page.getServices())
                                     <div class="col-lg-4 col-md-6 col-12">
                                         <div class="card shadow-sm x-shadow-fade-in h-100 border-top">
                                             <div class="card-header p-1 bg-info"></div>
                                             <div class="card-body h-100 d-flex flex-column">
                                                 <div class="mb-1">
                                                     <div class="badge bg-body-tertiary text-body">
-                                                        ${service.getName()} - ${service.getPrice()}
+                                                        ${org.example.service.getName()} - ${org.example.service.getPrice()}
                                                     </div>
                                                 </div>
-                                                <h5 class="mb-5">${service.getDescription()}</h5>
+                                                <h5 class="mb-5">${org.example.service.getDescription()}</h5>
                                                 <div class="text-end mt-auto">
-                                                    <a class="stretched-link text-decoration-none text-body align-bottom" href="${page.getOrdersByServicePath(service.getId())}">Выбрать</a>
+                                                    <a class="stretched-link text-decoration-none text-body align-bottom" href="${page.getOrdersByServicePath(org.example.service.getId())}">Выбрать</a>
                                                 </div>
                                             </div>
                                         </div>

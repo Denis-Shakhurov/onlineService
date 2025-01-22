@@ -1,6 +1,6 @@
-import controller.RegistrationController;
-import controller.StartController;
-import dto.BasePage;
+import org.example.CreateApp;
+import org.example.controller.RegistrationController;
+import org.example.dto.BasePage;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;

@@ -1,4 +1,4 @@
-@import dto.UserPage
+@import org.example.dto.UserPage
 @import java.time.format.DateTimeFormatter
 @param UserPage page
 

@@ -1,17 +1,18 @@
-import controller.OrderController;
+import org.example.CreateApp;
+import org.example.controller.OrderController;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 import io.javalin.http.NotFoundResponse;
-import model.Order;
-import model.Service;
-import model.User;
+import org.example.model.Order;
+import org.example.model.Service;
+import org.example.model.User;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.*;
-import service.OrderService;
-import service.ServiceService;
-import service.UserService;
+import org.example.service.OrderService;
+import org.example.service.ServiceService;
+import org.example.service.UserService;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -60,7 +61,7 @@ public class OrderControllerTest {
     }
 
     @Test
-    @DisplayName("Successfully create order with valid user ID, service ID and future date")
+    @DisplayName("Successfully create order with valid user ID, org.example.service ID and future date")
     public void createOrderWithValidDataTest() {
 
         User user = new User();
@@ -83,7 +84,7 @@ public class OrderControllerTest {
     }
 
     @Test
-    @DisplayName("Successfully render create order page with valid user and service")
+    @DisplayName("Successfully render create order page with valid user and org.example.service")
     public void createOrderPageWithValidUserAndService() {
 
         User user = new User();
@@ -149,7 +150,7 @@ public class OrderControllerTest {
     }
 
     @Test
-    @DisplayName("Status code 404 returned for missing service/user")
+    @DisplayName("Status code 404 returned for missing org.example.service/user")
     public void createOrderWithMissingServiceUserTest() {
 
         when(ctx.cookie("userId")).thenReturn("1");

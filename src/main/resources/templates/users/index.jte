@@ -1,4 +1,4 @@
-@import dto.UsersPage
+@import org.example.dto.UsersPage
 @param UsersPage page
 
 @template.layout.page(
