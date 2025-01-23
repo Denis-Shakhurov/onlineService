@@ -1,5 +1,6 @@
 package org.example;
 
+import com.lambdaworks.crypto.SCryptUtil;
 import org.example.config.Provider;
 import org.example.config.javalinjwt.JWTAccessManager;
 import org.example.config.javalinjwt.JWTProvider;
@@ -13,6 +14,7 @@ import io.javalin.rendering.template.JavalinJte;
 import io.javalin.security.RouteRole;
 import org.example.controller.*;
 import org.example.model.Role;
+import org.example.model.Service;
 import org.example.model.User;
 import org.example.service.OrderService;
 import org.example.service.ServiceService;
@@ -89,5 +91,37 @@ public class CreateApp {
         app.post(namedRoutes.getRegistrationMasterPath(), ctx -> {userController.create(ctx, "master");}, Role.USER, Role.GUEST, Role.MASTER);
 
         return app;
+    }
+
+    private void createEntityForDemonstration() {
+        // create master
+        User master1 = userService.save(createUser(
+                "Bob",
+                "Smith",
+                "smith@example.com",
+                SCryptUtil.scrypt("password", 2, 2, 2),
+                "master"));
+        User master2 = userService.save(createUser(
+                "Alisa",
+                "Smith",
+                "smithAlisa@example.com",
+                SCryptUtil.scrypt("password", 2, 2, 2),
+                "master"));
+        Service service = new Service();
+        service.setName("Стрижка");
+        service.setDescription("Стрижка на высшем уровне");
+        service.setPrice(1500d);
+        service.setUser(master1);
+
+    }
+
+    private User createUser(String firstName, String lastName, String email, String password, String role) {
+        User user = new User();
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setEmail(email);
+        user.setPassword(password);
+        user.setRole(role);
+        return user;
     }
 }
