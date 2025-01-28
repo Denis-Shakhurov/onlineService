@@ -58,7 +58,7 @@ content = @`
                                                 @if(page.getUser().getRole().equals("user"))
                                                 <span class="d-inline-block">Послежний заказ - ${page.getOrders().get(0).getOrderDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))}</span>
                                                 @else
-                                                <span class="d-inline-block">Ближайший заказ - ${page.getOrders().get(0).getOrderDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm"))}</span>
+                                                <span class="d-inline-block">Ближайший заказ - ${page.getOrders().get(0).getOrderDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"))}</span>
                                                 @endif
                                             @endif
                                         </div>
@@ -101,7 +101,7 @@ content = @`
                                                 </div>
                                             </div>
                                             <h5 class="mb-5">Стоимость: ${order.getPrice()}</h5>
-                                            <h5 class="mb-5">Запись на дату: ${order.getOrderDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm"))}</h5>
+                                            <h5 class="mb-5">Запись на дату: ${order.getOrderDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"))}</h5>
                                             <div class="text-end mt-auto">
                                                 <a class="stretched-link text-decoration-none text-body align-bottom" href="${page.getOrdersByServicePath(order.getService().getId())}">Повторить</a>
                                             </div>
@@ -132,7 +132,7 @@ content = @`
                                                 <th scope="row">${order.getUser().getFirstName()} ${order.getUser().getLastName()}</th>
                                                 <th scope="row">${order.getUser().getEmail()}</th>
                                                 <th scope="row">${order.getService().getPrice()}</th>
-                                                <th scope="row">${order.getOrderDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm"))}</th>
+                                                <th scope="row">${order.getOrderDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"))}</th>
                                                 <th scope="row">${order.getOrderStatus()}</th>
                                             </tr>
                                             </tbody>

@@ -86,7 +86,7 @@ content = @`
                                                         </div>
                                                     </div>
                                                     <h5 class="mb-5">${order.getUser().getFirstName()} ${order.getUser().getLastName()}</h5>
-                                                    <h5 class="mb-5">Запись на дату: ${order.getOrderDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm"))}</h5>
+                                                    <h5 class="mb-5">Запись на дату: ${order.getOrderDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"))}</h5>
                                                     <div class="text-end mt-auto">
                                                         <a class="stretched-link text-decoration-none text-body align-bottom" href="">Отметить как исполнено</a>
                                                     </div>
