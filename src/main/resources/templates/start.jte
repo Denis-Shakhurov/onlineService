@@ -1,4 +1,5 @@
 @import org.example.dto.BasePage
+@import org.example.model.OrderStatus
 @import java.time.format.DateTimeFormatter
 @param BasePage page
 
@@ -76,6 +77,7 @@ content = @`
                                 <h2 class="h4 mb-4">Текущие заказы на мои услуги</h2>
                                 <div class="row gy-3">
                                     @for(var order : page.getOrders())
+                                        @if(order.getOrderStatus().equals(OrderStatus.CREATED))
                                         <div class="col-lg-4 col-md-6 col-12">
                                             <div class="card shadow-sm x-shadow-fade-in h-100 border-top">
                                                 <div class="card-header p-1 bg-info"></div>
@@ -93,6 +95,7 @@ content = @`
                                                 </div>
                                             </div>
                                         </div>
+                                        @endif
                                     @endfor
                                 </div>
                             </div>

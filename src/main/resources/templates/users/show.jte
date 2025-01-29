@@ -1,4 +1,5 @@
 @import org.example.dto.UserPage
+@import org.example.model.OrderStatus
 @import java.time.format.DateTimeFormatter
 @param UserPage page
 
@@ -58,7 +59,11 @@ content = @`
                                                 @if(page.getUser().getRole().equals("user"))
                                                 <span class="d-inline-block">Послежний заказ - ${page.getOrders().get(0).getOrderDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))}</span>
                                                 @else
-                                                <span class="d-inline-block">Ближайший заказ - ${page.getOrders().get(0).getOrderDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"))}</span>
+                                                <span class="d-inline-block">Ближайший заказ - ${page.getOrders().stream()
+                                                                                                        .filter(o -> o.getOrderStatus().equals(OrderStatus.CREATED))
+                                                                                                        .findFirst()
+                                                                                                        .get()
+                                                                                                        .getOrderDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"))}</span>
                                                 @endif
                                             @endif
                                         </div>

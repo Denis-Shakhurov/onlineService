@@ -13,14 +13,13 @@ import io.javalin.http.Handler;
 import io.javalin.rendering.template.JavalinJte;
 import io.javalin.security.RouteRole;
 import org.example.controller.*;
-import org.example.model.Role;
-import org.example.model.Service;
-import org.example.model.User;
+import org.example.model.*;
 import org.example.service.OrderService;
 import org.example.service.ServiceService;
 import org.example.service.UserService;
 import org.example.utils.NamedRoutes;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -90,6 +89,8 @@ public class CreateApp {
         app.post(namedRoutes.getRegistrationUserPath(), ctx -> {userController.create(ctx, "user");}, Role.USER, Role.GUEST, Role.MASTER);
         app.post(namedRoutes.getRegistrationMasterPath(), ctx -> {userController.create(ctx, "master");}, Role.USER, Role.GUEST, Role.MASTER);
 
+        createEntityForDemonstration();
+
         return app;
     }
 
@@ -107,11 +108,105 @@ public class CreateApp {
                 "smithAlisa@example.com",
                 SCryptUtil.scrypt("password", 2, 2, 2),
                 "master"));
-        Service service = new Service();
-        service.setName("Стрижка");
-        service.setDescription("Стрижка на высшем уровне");
-        service.setPrice(1500d);
-        service.setUser(master1);
+
+        // create service
+        Service service = serviceService.save(createService(
+                "Стрижка",
+                "Стрижка на высшем уровне",
+                1500d,
+                master1));
+
+        Service service2 = serviceService.save(createService(
+                "Детская стрижка",
+                "Стрижка для детей от 3 лет",
+                1000d,
+                master1));
+
+        Service service3 = serviceService.save(createService(
+                "Стрижка комбо",
+                "Классическая стрижка + оформление бороды",
+                2000d,
+                master1));
+
+        Service service4 = serviceService.save(createService(
+                "Маникюр",
+                "Классический маникюр",
+                1000d,
+                master2));
+
+        Service service5 = serviceService.save(createService(
+                "Педикюр",
+                "Классический педикюр",
+                1000d,
+                master2));
+
+        // create customer
+        User user = userService.save(createUser(
+                "Denis",
+                "Ivanov",
+                "denis@mail.com",
+                SCryptUtil.scrypt("password", 2, 2, 2),
+                "user"
+        ));
+
+        User user2 = userService.save(createUser(
+                "Marina",
+                "Petrova",
+                "petrova@mail.com",
+                SCryptUtil.scrypt("password", 2, 2, 2),
+                "user"
+        ));
+
+        User user3 = userService.save(createUser(
+                "David",
+                "Glamurnyi",
+                "best@mail.com",
+                SCryptUtil.scrypt("password", 2, 2, 2),
+                "user"
+        ));
+
+        // create order
+        orderService.save(createOrder(
+                user,
+                service,
+                LocalDateTime.now().plusDays(7),
+                OrderStatus.CREATED
+        ));
+
+        orderService.save(createOrder(
+                user,
+                service3,
+                LocalDateTime.now().plusDays(21),
+                OrderStatus.CREATED
+        ));
+
+        orderService.save(createOrder(
+                user2,
+                service4,
+                LocalDateTime.now().plusDays(3),
+                OrderStatus.CREATED
+        ));
+
+        orderService.save(createOrder(
+                user2,
+                service5,
+                LocalDateTime.now().plusDays(7),
+                OrderStatus.CREATED
+        ));
+
+        orderService.save(createOrder(
+                user3,
+                service3,
+                LocalDateTime.now().minusDays(3),
+                OrderStatus.SUCCEEDED
+        ));
+
+        orderService.save(createOrder(
+                user3,
+                service5,
+                LocalDateTime.now().minusDays(5),
+                OrderStatus.SUCCEEDED
+        ));
 
     }
 
@@ -123,5 +218,24 @@ public class CreateApp {
         user.setPassword(password);
         user.setRole(role);
         return user;
+    }
+
+    private Service createService(String serviceName, String description, double price, User user) {
+        Service service = new Service();
+        service.setName(serviceName);
+        service.setDescription(description);
+        service.setPrice(price);
+        service.setUser(user);
+        return service;
+    }
+
+    private Order createOrder(User user, Service service, LocalDateTime date, OrderStatus status) {
+        Order order = new Order();
+        order.setService(service);
+        order.setUser(user);
+        order.setPrice(service.getPrice());
+        order.setOrderDate(date);
+        order.setOrderStatus(status);
+        return order;
     }
 }
