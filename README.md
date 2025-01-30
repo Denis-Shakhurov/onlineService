@@ -12,10 +12,12 @@
 
 mvn clean install
 
+---
 Запуск:
 
 java -jar {path to file}/onlineService-1.0-SNAPSHOT.jar
 
+---
 После запуска:
 
 прилжение доступно по адрусу: http://localhost:8080/
