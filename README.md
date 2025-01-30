@@ -14,12 +14,12 @@
 ---
 Установка:
 
-mvn clean install
+`mvn clean install`
 
 ---
 Запуск:
 
-java -jar {path to file}/onlineService-1.0-SNAPSHOT.jar
+`java -jar {path to file}/onlineService-1.0-SNAPSHOT.jar`
 
 ---
 После запуска:
