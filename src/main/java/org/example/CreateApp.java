@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CreateApp {
+    private final JavalinJWT javalinJWT = new JavalinJWT();
     private final Provider provider = new Provider();
     private final NamedRoutes namedRoutes = new NamedRoutes();
     private final UserService userService = new UserService();
@@ -50,7 +51,7 @@ public class CreateApp {
         // create the provider
         JWTProvider<User> providerUser = provider.create();
 
-        Handler decodeHandler = JavalinJWT.createCookieDecodeHandler(providerUser);
+        Handler decodeHandler = javalinJWT.createCookieDecodeHandler(providerUser);
         // create the access manager
         Map<String, RouteRole> rolesMapping = new HashMap<>() {{
             put("user", Role.USER);
@@ -58,7 +59,7 @@ public class CreateApp {
             put("admin", Role.ADMIN);
         }};
 
-        JWTAccessManager accessManager = new JWTAccessManager("role", rolesMapping, Role.GUEST);
+        JWTAccessManager accessManager = new JWTAccessManager(javalinJWT,"role", rolesMapping, Role.GUEST);
 
         // set the paths
         app.before(decodeHandler);

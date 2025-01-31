@@ -15,19 +15,21 @@ public class JWTAccessManager implements Handler {
     private final String userRoleClaim;
     private final Map<String, RouteRole> rolesMapping;
     private final RouteRole defaultRole;
+    private final JavalinJWT javalinJWT;
 
-    public JWTAccessManager(String userRoleClaim, Map<String, RouteRole> rolesMapping, RouteRole defaultRole) {
+    public JWTAccessManager(JavalinJWT javalinJWT, String userRoleClaim, Map<String, RouteRole> rolesMapping, RouteRole defaultRole) {
         this.userRoleClaim = userRoleClaim;
         this.rolesMapping = rolesMapping;
         this.defaultRole = defaultRole;
+        this.javalinJWT = javalinJWT;
     }
 
     private RouteRole extractRole(Context context) {
-        if (!JavalinJWT.containsJWT(context)) {
+        if (!javalinJWT.containsJWT(context)) {
             return defaultRole;
         }
 
-        DecodedJWT jwt = JavalinJWT.getDecodedFromContext(context);
+        DecodedJWT jwt = javalinJWT.getDecodedFromContext(context);
 
         String userLevel = jwt.getClaim(userRoleClaim).asString();
 

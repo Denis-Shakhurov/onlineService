@@ -12,16 +12,16 @@ public class JavalinJWT {
     private final static String COOKIE_KEY = "jwt";
 
 
-    public static boolean containsJWT(Context context) {
+    public boolean containsJWT(Context context) {
         return context.attribute(CONTEXT_ATTRIBUTE) != null;
     }
 
-    public static Context addDecodedToContext(Context context, DecodedJWT jwt) {
+    public Context addDecodedToContext(Context context, DecodedJWT jwt) {
         context.attribute(CONTEXT_ATTRIBUTE, jwt);
         return context;
     }
 
-    public static DecodedJWT getDecodedFromContext(Context context) {
+    public DecodedJWT getDecodedFromContext(Context context) {
         Object attribute = context.attribute(CONTEXT_ATTRIBUTE);
 
         if (!(attribute instanceof DecodedJWT)) {
@@ -31,7 +31,7 @@ public class JavalinJWT {
         return (DecodedJWT) attribute;
     }
 
-    public static Optional<String> getTokenFromHeader(Context context) {
+    public Optional<String> getTokenFromHeader(Context context) {
         return Optional.ofNullable(context.header("Authorization"))
                 .flatMap(header -> {
                     String[] split = header.split(" ");
@@ -43,23 +43,23 @@ public class JavalinJWT {
                 });
     }
 
-    public static Optional<String> getTokenFromCookie(Context context) {
+    public Optional<String> getTokenFromCookie(Context context) {
         return Optional.ofNullable(context.cookie(COOKIE_KEY));
     }
 
-    public static Context addTokenToCookie(Context context, String token) {
+    public Context addTokenToCookie(Context context, String token) {
         return context.cookie(COOKIE_KEY, token);
     }
 
-    public static <T> Handler createHeaderDecodeHandler(JWTProvider<T> jwtProvider) {
+    public <T> Handler createHeaderDecodeHandler(JWTProvider<T> jwtProvider) {
         return context -> getTokenFromHeader(context)
                 .flatMap(jwtProvider::validateToken)
-                .ifPresent(jwt -> JavalinJWT.addDecodedToContext(context, jwt));
+                .ifPresent(jwt -> addDecodedToContext(context, jwt));
     }
 
-    public static <T> Handler createCookieDecodeHandler(JWTProvider<T> jwtProvider) {
+    public <T> Handler createCookieDecodeHandler(JWTProvider<T> jwtProvider) {
         return context -> getTokenFromCookie(context)
                 .flatMap(jwtProvider::validateToken)
-                .ifPresent(jwt -> JavalinJWT.addDecodedToContext(context, jwt));
+                .ifPresent(jwt -> addDecodedToContext(context, jwt));
     }
 }

@@ -12,7 +12,6 @@ import org.hibernate.boot.registry.StandardServiceRegistry;
 public class MySessionFactory {
     private final String APPLICATION_PROPERTIES = "application.properties";
 
-
     public SessionFactory getSessionFactory() {
         StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
                 .loadProperties(APPLICATION_PROPERTIES)
